@@ -1,6 +1,5 @@
 package cz.cvut.fit.tjv.hujomark.project.business;
 
-import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -10,13 +9,16 @@ import java.util.Optional;
  * Abstract superclass for all entities supporting CRUD operations
  * @param <E> Type of entity
  * @param <K> Type of primary key
+ * @param <R> JpaRepository interface of given entity E inheriting from JpaRepository
  */
-public abstract class AbstractCrudService<E, K> {
-    private final JpaRepository<E, K> jpaRepository;
+public abstract class AbstractCrudService<E, K, R extends JpaRepository<E, K>> {
+    protected final R repository;
 
-    protected AbstractCrudService(JpaRepository<E, K> jpaRepository) {
-        this.jpaRepository = jpaRepository;
+    protected AbstractCrudService(R repository) {
+        this.repository = repository;
     }
+
+    protected abstract boolean exists(E entity);
 
     /**
      * Creates and stores a new entity
@@ -24,20 +26,20 @@ public abstract class AbstractCrudService<E, K> {
      * @throws IllegalArgumentException if entity already exists
      */
     public void create(E entity) {
-        if (jpaRepository.exists(Example.of(entity)))
+        if (exists(entity))
             throw new IllegalArgumentException("Entity already exists.");
-        jpaRepository.save(entity);
+        repository.save(entity);
     }
 
     public List<E> readAll() {
-        return jpaRepository.findAll();
+        return repository.findAll();
     }
 
     public Optional<E> readById(K id) {
-        return jpaRepository.findById(id);
+        return repository.findById(id);
     }
 
     public void deleteById(K id) {
-        jpaRepository.deleteById(id);
+        repository.deleteById(id);
     }
 }
