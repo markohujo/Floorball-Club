@@ -17,4 +17,5 @@ dependencies {
     implementation 'org.springframework:spring-beans:5.3.11'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.5.5'
 	implementation 'org.springframework.boot:spring-boot-starter-web:2.5.5'
+    runtimeOnly 'org.xerial:sqlite-jdbc:3.36.0.3'
 }
