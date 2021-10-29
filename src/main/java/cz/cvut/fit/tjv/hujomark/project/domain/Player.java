@@ -1,11 +1,13 @@
 package cz.cvut.fit.tjv.hujomark.project.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 public class Player {
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_seq")
+    @SequenceGenerator(name = "player_seq", sequenceName = "player_seq", allocationSize = 1)
     @Id
     private Long id;
 
@@ -49,5 +51,28 @@ public class Player {
 
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Player player)) return false;
+        return id.equals(player.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", surname='" + surname + '\'' +
+            ", email='" + email + '\'' +
+            ", dateOfBirth=" + dateOfBirth +
+            '}';
     }
 }
