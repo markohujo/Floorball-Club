@@ -2,6 +2,7 @@ package cz.cvut.fit.tjv.hujomark.project.business;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,10 +27,14 @@ public abstract class AbstractCrudService<E, K, R extends JpaRepository<E, K>> {
     /**
      * @throws IllegalArgumentException if the given entity already exists or is null
      */
+    @Transactional
     public void create(E entity) {
         if (exists(entity))
             throw new IllegalArgumentException("Entity already exists.");
-        repository.save(entity);
+
+        // TODO debug repository.save "The database file is locked"
+        System.out.println(entity);
+//        repository.save(entity);
     }
 
     public List<E> readAll() {
@@ -46,6 +51,7 @@ public abstract class AbstractCrudService<E, K, R extends JpaRepository<E, K>> {
     /**
      * @throws IllegalArgumentException if the given entity is null or does not exist
      */
+    @Transactional
     public void update(E entity) {
         if (exists(entity))
             repository.save(entity);

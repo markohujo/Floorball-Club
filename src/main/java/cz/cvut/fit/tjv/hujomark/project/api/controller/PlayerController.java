@@ -17,6 +17,7 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
+    // TODO does not save new player to db
     @PostMapping("/players")
     public PlayerDto newPlayer(@RequestBody PlayerDto newPlayer) {
         Player player = PlayerConverter.toModel(newPlayer);
