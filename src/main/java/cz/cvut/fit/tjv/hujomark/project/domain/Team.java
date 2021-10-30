@@ -31,6 +31,18 @@ public class Team {
         this.matches = matches;
     }
 
+    public void addPlayer(Player player) {
+        players.add(player);
+    }
+
+    public void addMatch(Match match) {
+        matches.add(match);
+    }
+
+    public void removePlayer(Player player) {
+        players.remove(player);
+    }
+
     public Long getId() {
         return id;
     }
