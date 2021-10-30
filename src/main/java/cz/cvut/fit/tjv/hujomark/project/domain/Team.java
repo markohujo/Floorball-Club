@@ -16,17 +16,19 @@ public class Team {
 
     // TODO
     @ManyToMany
-    private final Set<Player> players = new HashSet<>();
+    private Set<Player> players;
 
     // TODO
     @OneToMany
-    private final Set<Match> matches = new HashSet<>();
+    private Set<Match> matches;
 
     public Team() {}
 
-    public Team(Long id, String name) {
+    public Team(Long id, String name, Set<Player> players, Set<Match> matches) {
         this.id = id;
         this.name = name;
+        this.players = players;
+        this.matches = matches;
     }
 
     public Long getId() {

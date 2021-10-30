@@ -1,20 +1,28 @@
 package cz.cvut.fit.tjv.hujomark.project.api.controller;
 
 import cz.cvut.fit.tjv.hujomark.project.api.converter.PlayerConverter;
+import cz.cvut.fit.tjv.hujomark.project.api.converter.TeamConverter;
 import cz.cvut.fit.tjv.hujomark.project.business.PlayerService;
 
+import cz.cvut.fit.tjv.hujomark.project.business.TeamService;
 import cz.cvut.fit.tjv.hujomark.project.domain.Player;
+import cz.cvut.fit.tjv.hujomark.project.domain.Team;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestController
 public class PlayerController {
 
     private final PlayerService playerService;
 
-    public PlayerController(PlayerService playerService) {
+    private final TeamService teamService;
+
+    public PlayerController(PlayerService playerService, TeamService teamService) {
         this.playerService = playerService;
+        this.teamService = teamService;
     }
 
     // TODO does not save new player to db
@@ -33,6 +41,19 @@ public class PlayerController {
     @GetMapping("/players/{id}")
     public PlayerDto one(@PathVariable Long id) {
         return PlayerConverter.fromModel(playerService.readById(id).orElseThrow(IllegalArgumentException::new));
+    }
+
+    /**
+     * Iterates over all teams and determines whether each team contains player with the given id
+     */
+    @GetMapping("/players/{id}/teams")
+    public Collection<TeamDto> teams(@PathVariable Long id) {
+        Set<Team> teams = new HashSet<>();
+        teamService.readAll().forEach(team -> {
+            if (team.getPlayers().contains(playerService.readById(id).orElseThrow()))
+                teams.add(team);
+        });
+        return TeamConverter.fromModelMany(teams);
     }
 
     @PutMapping("/players/{id}")
