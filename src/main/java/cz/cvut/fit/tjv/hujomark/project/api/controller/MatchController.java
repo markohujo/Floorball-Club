@@ -8,6 +8,16 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
+/**
+ * REST API for Match entity
+ *
+ * Supported methods:
+ *      POST newMatch (/matches)
+ *      GET all (/matches)
+ *      GET one (/matches/{id})
+ *      PUT updateDateTime (/matches/{id})
+ *      DELETE deleteMatch (/matches/{id})
+ */
 @RestController
 public class MatchController {
     private final MatchService matchService;

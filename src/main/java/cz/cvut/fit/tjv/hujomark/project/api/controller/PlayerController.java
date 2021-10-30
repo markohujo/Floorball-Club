@@ -5,15 +5,23 @@ import cz.cvut.fit.tjv.hujomark.project.api.converter.PlayerConverter;
 import cz.cvut.fit.tjv.hujomark.project.api.converter.TeamConverter;
 import cz.cvut.fit.tjv.hujomark.project.business.PlayerService;
 
-import cz.cvut.fit.tjv.hujomark.project.business.TeamService;
 import cz.cvut.fit.tjv.hujomark.project.domain.Player;
-import cz.cvut.fit.tjv.hujomark.project.domain.Team;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
+/**
+ * REST API for Player entity
+ *
+ * Supported methods:
+ *      POST newPlayer (/players)
+ *      GET all (/players)
+ *      GET one (/players/{id})
+ *      GET teams (/players/{id}/teams)
+ *      GET matches (/players/{id}/matches)
+ *      PUT updateEmail (/players/{id})
+ *      DELETE deletePlayer (/players/{id})
+ */
 @RestController
 public class PlayerController {
     private final PlayerService playerService;
