@@ -15,14 +15,10 @@ import java.util.Set;
 
 @RestController
 public class PlayerController {
-
     private final PlayerService playerService;
-
-    private final TeamService teamService;
 
     public PlayerController(PlayerService playerService, TeamService teamService) {
         this.playerService = playerService;
-        this.teamService = teamService;
     }
 
     // TODO does not save new player to db
@@ -43,17 +39,9 @@ public class PlayerController {
         return PlayerConverter.fromModel(playerService.readById(id).orElseThrow(IllegalArgumentException::new));
     }
 
-    /**
-     * Iterates over all teams and determines whether each team contains player with the given id
-     */
     @GetMapping("/players/{id}/teams")
     public Collection<TeamDto> teams(@PathVariable Long id) {
-        Set<Team> teams = new HashSet<>();
-        teamService.readAll().forEach(team -> {
-            if (team.getPlayers().contains(playerService.readById(id).orElseThrow()))
-                teams.add(team);
-        });
-        return TeamConverter.fromModelMany(teams);
+        return TeamConverter.fromModelMany(playerService.findTeams(id));
     }
 
     @PutMapping("/players/{id}")
