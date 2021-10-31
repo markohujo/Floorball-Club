@@ -18,9 +18,8 @@ import java.util.Collection;
  *      GET one (/teams/{id})
  *      GET players (/teams/{id}/players)
  *      GET matches (/teams/{id}/matches)
- *      PUT addPlayer (/teams/{id})
- *      PUT addMatch (/teams/{id})
- *      PUT removePlayer (/teams/{id})
+ *      PUT addOrRemovePlayer (/teams/{id}/players)
+ *      PUT addOrRemoveMatch (/teams/{id}/matches)
  *      DELETE deleteTeam (/teams/{id})
  */
 @RestController
@@ -61,23 +60,18 @@ public class TeamController {
     }
 
     @PutMapping("/teams/{id}/players")
-    public TeamDto addPlayer(Long id, PlayerDto playerDto) {
-        teamService.addPlayer(id, PlayerConverter.toModel(playerDto));
+    public TeamDto addOrRemovePlayer(@PathVariable Long id, @RequestParam Long player, @RequestParam boolean remove) {
+        teamService.addOrRemovePlayer(id, player, remove);
         return TeamConverter.fromModel(teamService.readById(id).orElseThrow());
     }
 
     @PutMapping("/teams/{id}/matches")
-    public TeamDto addMatch(Long id, MatchDto matchDto) {
-        teamService.addMatch(id, MatchConverter.toModel(matchDto));
+    public TeamDto addOrRemoveMatch(@PathVariable Long id, @RequestParam Long match, @RequestParam boolean remove) {
+        teamService.addOrRemoveMatch(id, match, remove);
         return TeamConverter.fromModel(teamService.readById(id).orElseThrow());
     }
 
-    public TeamDto removePlayer(Long id, PlayerDto playerDto) {
-        teamService.removePlayer(id, PlayerConverter.toModel(playerDto));
-        return TeamConverter.fromModel(teamService.readById(id).orElseThrow());
-    }
-
-    @DeleteMapping("/matches/{id}")
+    @DeleteMapping("/teams/{id}")
     public void deleteTeam(@PathVariable Long id) {
         teamService.deleteById(id);
     }

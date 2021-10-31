@@ -43,6 +43,10 @@ public class Team {
         players.remove(player);
     }
 
+    public void removeMatch(Match match) {
+        matches.remove(match);
+    }
+
     public Long getId() {
         return id;
     }

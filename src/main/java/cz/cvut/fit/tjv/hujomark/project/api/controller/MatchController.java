@@ -44,8 +44,8 @@ public class MatchController {
     }
 
     @PutMapping("/matches/{id}")
-    public MatchDto updateDateTime(@PathVariable Long id, @RequestParam LocalDateTime dateTime) {
-        matchService.updateDateTime(id, dateTime);
+    public MatchDto updateDateTime(@PathVariable Long id, @RequestParam String dateTimeStr) {
+        matchService.updateDateTime(id, dateTimeStr);
         return MatchConverter.fromModel(matchService.readById(id).orElseThrow());
     }
 
