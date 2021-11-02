@@ -14,12 +14,14 @@ public class Team {
 
     private String name;
 
-    // TODO
     @ManyToMany
+    @JoinTable(name = "player_team",
+               joinColumns = @JoinColumn(name = "team_id"),
+               inverseJoinColumns = @JoinColumn(name = "player_id"))
     private Set<Player> players;
 
-    // TODO
     @OneToMany
+    @JoinColumn(name = "team_id", nullable = false)
     private Set<Match> matches;
 
     public Team() {}

@@ -1,5 +1,6 @@
 package cz.cvut.fit.tjv.hujomark.project.business;
 
+import cz.cvut.fit.tjv.hujomark.project.api.controller.TeamDto;
 import cz.cvut.fit.tjv.hujomark.project.dao.PlayerJpaRepository;
 import cz.cvut.fit.tjv.hujomark.project.domain.Match;
 import cz.cvut.fit.tjv.hujomark.project.domain.Player;
@@ -26,29 +27,22 @@ public class PlayerService extends AbstractCrudService<Player, Long, PlayerJpaRe
         return repository.existsById(entity.getId());
     }
 
-    /**
-     * Iterates over all teams and determines whether each team contains player with the given id
-     * @param id primary key of player
-     * @throws NoSuchElementException if no player with the given id is found
-     * TODO select in db (or faster) ???
-     */
     public Collection<Team> findTeams(Long id) {
-        Set<Team> teams = new HashSet<>();
-        teamService.readAll().forEach(team -> {
-            if (team.getPlayers().contains(readById(id).orElseThrow()))
-                teams.add(team);
-        });
-        return teams;
+        return repository.findTeams(id);
+//        Set<Team> teams = new HashSet<>();
+//        teamService.readAll().forEach(team -> {
+//            if (team.getPlayers().contains(readById(id).orElseThrow()))
+//                teams.add(team);
+//        });
+//        return teams;
     }
 
-    /**
-     * TODO select in db (or faster) ???
-     */
     public Collection<Match> findMatches(Long id) {
-        Set<Match> matches = new HashSet<>();
-        Set<Team> teams = new HashSet<>(findTeams(id));
-        teams.forEach(team -> matches.addAll(team.getMatches()));
-        return matches;
+        return repository.findMatches(id);
+//        Set<Match> matches = new HashSet<>();
+//        Set<Team> teams = new HashSet<>(findTeams(id));
+//        teams.forEach(team -> matches.addAll(team.getMatches()));
+//        return matches;
     }
 
     /**
