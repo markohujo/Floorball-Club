@@ -1,0 +1,79 @@
+GET http://localhost:8080/players
+
+###
+GET http://localhost:8080/matches
+
+###
+GET http://localhost:8080/teams
+
+###
+GET http://localhost:8080/players/1
+
+###
+GET http://localhost:8080/players/1/teams
+
+###
+GET http://localhost:8080/players/3/teams
+
+###
+GET http://localhost:8080/players/5/teams
+
+###
+GET http://localhost:8080/players/1/matches
+
+###
+GET http://localhost:8080/players/3/matches
+
+###
+GET http://localhost:8080/players/5/matches
+
+###
+GET http://localhost:8080/teams/1
+
+###
+GET http://localhost:8080/teams/1/players
+
+###
+GET http://localhost:8080/teams/1/matches
+
+###
+POST http://localhost:8080/players
+Content-Type: application/json
+
+{
+    "id": 6,
+    "name": "New",
+    "surname": "Player",
+    "email": "newp@gmail.com",
+    "dateOfBirth": "19.11.2000"
+}
+
+###
+POST http://localhost:8080/matches
+Content-Type: application/json
+
+{
+  "id": 5,
+  "dateTime": "20.11.2021 19:00"
+}
+
+###
+PUT http://localhost:8080/players/5?email=newemail@gmail.com
+
+###
+DELETE http://localhost:8080/players/5
+
+###
+PUT http://localhost:8080/matches/4?dateTimeStr=20.11.2021 19:00
+
+###
+DELETE http://localhost:8080/matches/3
+
+###
+PUT http://localhost:8080/teams/2/players?player=2&remove=true
+
+###
+PUT http://localhost:8080/teams/2/players?player=4&remove=false
+
+###
+DELETE http://localhost:8080/teams/2
