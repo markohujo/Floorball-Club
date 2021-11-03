@@ -1,10 +1,13 @@
 package cz.cvut.fit.tjv.hujomark.project.api.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 
 public class MatchDto {
     public Long id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d.M.yyyy HH:mm")
     public LocalDateTime dateTime;
 
     public MatchDto() {}

@@ -22,7 +22,7 @@ public class MatchService extends AbstractCrudService<Match, Long, MatchJpaRepos
     @Transactional
     public void updateDateTime(Long id, String dateTimeStr) {
         Match match = readById(id).orElseThrow();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd;HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, formatter);
         match.setDateTime(dateTime);
         update(match);
