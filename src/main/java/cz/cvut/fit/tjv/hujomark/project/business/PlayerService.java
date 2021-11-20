@@ -52,6 +52,7 @@ public class PlayerService extends AbstractCrudService<Player, Long, PlayerJpaRe
         teamService.readById(teamId).orElseThrow().addPlayer(readById(id).orElseThrow());
     }
 
+    @Transactional
     public void removeFromTeam(Long id, Long teamId) {
         teamService.readById(teamId).orElseThrow().removePlayer(readById(id).orElseThrow());
     }

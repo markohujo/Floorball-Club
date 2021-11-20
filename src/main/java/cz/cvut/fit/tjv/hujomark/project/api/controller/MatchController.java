@@ -1,6 +1,7 @@
 package cz.cvut.fit.tjv.hujomark.project.api.controller;
 
 import cz.cvut.fit.tjv.hujomark.project.api.converter.MatchConverter;
+import cz.cvut.fit.tjv.hujomark.project.api.converter.TeamConverter;
 import cz.cvut.fit.tjv.hujomark.project.business.MatchService;
 import cz.cvut.fit.tjv.hujomark.project.domain.Match;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.Collection;
  *      POST newMatch (/matches)
  *      GET all (/matches)
  *      GET one (/matches/{id})
+ *      TODO GET team (/matches/{id}/team)
  *      PUT updateDateTime (/matches/{id})
  *      TODO PUT updateTeam (/matches/{id}/team)
  *      DELETE deleteMatch (/matches/{id})
@@ -42,6 +44,11 @@ public class MatchController {
     @GetMapping("/matches/{id}")
     public MatchDto one(@PathVariable Long id) {
         return MatchConverter.fromModel(matchService.readById(id).orElseThrow());
+    }
+
+    @GetMapping("matches/{id}/team")
+    public TeamDto team(@PathVariable Long id) {
+        return TeamConverter.fromModel(matchService.readById(id).orElseThrow().getTeam());
     }
 
     @PutMapping("/matches/{id}")

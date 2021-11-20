@@ -31,9 +31,11 @@ public class MatchService extends AbstractCrudService<Match, Long, MatchJpaRepos
         update(match);
     }
 
+    @Transactional
     public void updateTeam(Long id, Long teamId) {
         if (readById(id).orElseThrow().getTeam().getId().equals(teamId))
             return;
+
         readById(id).orElseThrow().getTeam().removeMatch(readById(id).orElseThrow());
         readById(id).orElseThrow().setTeam(teamService.readById(teamId).orElseThrow());
         teamService.readById(teamId).orElseThrow().addMatch(readById(id).orElseThrow());
