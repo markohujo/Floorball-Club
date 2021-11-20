@@ -16,6 +16,7 @@ import java.util.Collection;
  *      GET all (/matches)
  *      GET one (/matches/{id})
  *      PUT updateDateTime (/matches/{id})
+ *      TODO PUT updateTeam (/matches/{id}/team)
  *      DELETE deleteMatch (/matches/{id})
  */
 @RestController
@@ -46,6 +47,12 @@ public class MatchController {
     @PutMapping("/matches/{id}")
     public MatchDto updateDateTime(@PathVariable Long id, @RequestParam String dateTimeStr) {
         matchService.updateDateTime(id, dateTimeStr);
+        return MatchConverter.fromModel(matchService.readById(id).orElseThrow());
+    }
+
+    @PutMapping("/matches/{id}/team")
+    public MatchDto updateTeam(@PathVariable Long id, @RequestParam Long teamId) {
+        matchService.updateTeam(id, teamId);
         return MatchConverter.fromModel(matchService.readById(id).orElseThrow());
     }
 

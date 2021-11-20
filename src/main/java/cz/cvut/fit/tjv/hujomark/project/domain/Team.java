@@ -20,8 +20,7 @@ public class Team {
                inverseJoinColumns = @JoinColumn(name = "player_id"))
     private Set<Player> players;
 
-    @OneToMany
-    @JoinColumn(name = "team_id", nullable = false)
+    @OneToMany(mappedBy = "team")
     private Set<Match> matches;
 
     public Team() {}

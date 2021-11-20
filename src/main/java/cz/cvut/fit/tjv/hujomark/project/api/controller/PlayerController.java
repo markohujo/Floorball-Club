@@ -20,6 +20,8 @@ import java.util.Collection;
  *      GET teams (/players/{id}/teams)
  *      GET matches (/players/{id}/matches)
  *      PUT updateEmail (/players/{id})
+ *      TODO PUT addToTeam (/players/{id}/addTeam)
+ *      TODO PUT removeFromTeam (/players/{id}/removeTeam)
  *      DELETE deletePlayer (/players/{id})
  */
 @RestController
@@ -61,6 +63,18 @@ public class PlayerController {
     @PutMapping("/players/{id}")
     public PlayerDto updateEmail(@PathVariable Long id, @RequestParam String email) {
         playerService.updateEmail(id, email);
+        return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
+    }
+
+    @PutMapping("/players/{id}/addTeam")
+    public PlayerDto addToTeam(@PathVariable Long id, @RequestParam Long teamId) {
+        playerService.addToTeam(id, teamId);
+        return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
+    }
+
+    @PutMapping("/players/{id}/removeTeam")
+    public PlayerDto removeFromTeam(@PathVariable Long id, @RequestParam Long teamId) {
+        playerService.removeFromTeam(id, teamId);
         return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
     }
 

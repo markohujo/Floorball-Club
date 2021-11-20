@@ -10,8 +10,11 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 public class MatchService extends AbstractCrudService<Match, Long, MatchJpaRepository> {
-    protected MatchService(MatchJpaRepository repository) {
+    private final TeamService teamService;
+
+    protected MatchService(MatchJpaRepository repository, TeamService teamService) {
         super(repository);
+        this.teamService = teamService;
     }
 
     @Override
@@ -26,5 +29,13 @@ public class MatchService extends AbstractCrudService<Match, Long, MatchJpaRepos
         LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, formatter);
         match.setDateTime(dateTime);
         update(match);
+    }
+
+    public void updateTeam(Long id, Long teamId) {
+        if (readById(id).orElseThrow().getTeam().getId().equals(teamId))
+            return;
+        readById(id).orElseThrow().getTeam().removeMatch(readById(id).orElseThrow());
+        readById(id).orElseThrow().setTeam(teamService.readById(teamId).orElseThrow());
+        teamService.readById(teamId).orElseThrow().addMatch(readById(id).orElseThrow());
     }
 }

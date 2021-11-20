@@ -11,13 +11,13 @@ public class TeamDto {
 
     public String name;
 
-    public Set<Player> players;
+    public Set<Long> players;
 
-    public Set<Match> matches;
+    public Set<Long> matches;
 
     public TeamDto() {}
 
-    public TeamDto(Long id, String name, Set<Player> players, Set<Match> matches) {
+    public TeamDto(Long id, String name, Set<Long> players, Set<Long> matches) {
         this.id = id;
         this.name = name;
         this.players = players;
@@ -40,19 +40,19 @@ public class TeamDto {
         this.name = name;
     }
 
-    public Set<Player> getPlayers() {
+    public Set<Long> getPlayers() {
         return players;
     }
 
-    public void setPlayers(Set<Player> players) {
+    public void setPlayers(Set<Long> players) {
         this.players = players;
     }
 
-    public Set<Match> getMatches() {
+    public Set<Long> getMatches() {
         return matches;
     }
 
-    public void setMatches(Set<Match> matches) {
+    public void setMatches(Set<Long> matches) {
         this.matches = matches;
     }
 }

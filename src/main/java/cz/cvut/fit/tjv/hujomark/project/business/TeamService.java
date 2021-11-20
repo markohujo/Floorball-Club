@@ -11,7 +11,7 @@ public class TeamService extends AbstractCrudService<Team, Long, TeamJpaReposito
     private final MatchService matchService;
     private final PlayerService playerService;
 
-    protected TeamService(TeamJpaRepository repository, MatchService matchService, @Lazy PlayerService playerService) {
+    protected TeamService(TeamJpaRepository repository, @Lazy MatchService matchService, @Lazy PlayerService playerService) {
         super(repository);
         this.matchService = matchService;
         this.playerService = playerService;

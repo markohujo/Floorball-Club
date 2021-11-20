@@ -29,20 +29,10 @@ public class PlayerService extends AbstractCrudService<Player, Long, PlayerJpaRe
 
     public Collection<Team> findTeams(Long id) {
         return repository.findTeams(id);
-//        Set<Team> teams = new HashSet<>();
-//        teamService.readAll().forEach(team -> {
-//            if (team.getPlayers().contains(readById(id).orElseThrow()))
-//                teams.add(team);
-//        });
-//        return teams;
     }
 
     public Collection<Match> findMatches(Long id) {
         return repository.findMatches(id);
-//        Set<Match> matches = new HashSet<>();
-//        Set<Team> teams = new HashSet<>(findTeams(id));
-//        teams.forEach(team -> matches.addAll(team.getMatches()));
-//        return matches;
     }
 
     /**
@@ -55,5 +45,14 @@ public class PlayerService extends AbstractCrudService<Player, Long, PlayerJpaRe
         Player player = readById(id).orElseThrow();
         player.setEmail(email);
         update(player);
+    }
+
+    @Transactional
+    public void addToTeam(Long id, Long teamId) {
+        teamService.readById(teamId).orElseThrow().addPlayer(readById(id).orElseThrow());
+    }
+
+    public void removeFromTeam(Long id, Long teamId) {
+        teamService.readById(teamId).orElseThrow().removePlayer(readById(id).orElseThrow());
     }
 }

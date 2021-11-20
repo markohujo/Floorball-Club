@@ -13,6 +13,10 @@ public class Match {
 
     private LocalDateTime dateTime;
 
+    @ManyToOne
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
+
     public Match() {}
 
     public Match(Long id, LocalDateTime dateTime) {
@@ -30,6 +34,14 @@ public class Match {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     @Override
