@@ -24,6 +24,12 @@ public class Match {
         this.dateTime = dateTime;
     }
 
+    public Match(Long id, LocalDateTime dateTime, Team team) {
+        this.id = id;
+        this.dateTime = dateTime;
+        this.team = team;
+    }
+
     public Long getId() {
         return id;
     }

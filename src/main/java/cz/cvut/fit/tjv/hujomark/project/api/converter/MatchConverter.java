@@ -12,7 +12,7 @@ public class MatchConverter {
     }
 
     public static MatchDto fromModel(Match match) {
-        return new MatchDto(match.getId(),match.getDateTime());
+        return new MatchDto(match.getId(), match.getDateTime(), match.getTeam().getId());
     }
 
     public static Collection<Match> toModelMany(Collection<MatchDto> MatchDtos) {

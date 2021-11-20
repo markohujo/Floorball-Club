@@ -3,6 +3,7 @@ package cz.cvut.fit.tjv.hujomark.project.api.controller;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 public class PlayerDto {
     public Long id;
@@ -16,14 +17,17 @@ public class PlayerDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d.M.yyyy")
     public LocalDate dateOfBirth;
 
+    public Set<Long> teams;
+
     public PlayerDto() {}
 
-    public PlayerDto(Long id, String name, String surname, String email, LocalDate dateOfBirth) {
+    public PlayerDto(Long id, String name, String surname, String email, LocalDate dateOfBirth, Set<Long> teams) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+        this.teams = teams;
     }
 
     public Long getId() {
@@ -64,5 +68,13 @@ public class PlayerDto {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Set<Long> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(Set<Long> teams) {
+        this.teams = teams;
     }
 }

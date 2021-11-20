@@ -3,6 +3,7 @@ package cz.cvut.fit.tjv.hujomark.project.domain;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Player {
@@ -21,14 +22,18 @@ public class Player {
 
     private LocalDate dateOfBirth;
 
+    @ManyToMany(mappedBy = "players")
+    private Set<Team> teams;
+
     public Player() {}
 
-    public Player(Long id, String name, String surname, String email, LocalDate dateOfBirth) {
+    public Player(Long id, String name, String surname, String email, LocalDate dateOfBirth, Set<Team> teams) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+        this.teams = teams;
     }
 
     public Long getId() {
@@ -53,6 +58,10 @@ public class Player {
 
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    public Set<Team> getTeams() {
+        return teams;
     }
 
     @Override
