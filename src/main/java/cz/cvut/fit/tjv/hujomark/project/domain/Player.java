@@ -84,6 +84,7 @@ public class Player {
             ", surname='" + surname + '\'' +
             ", email='" + email + '\'' +
             ", dateOfBirth=" + dateOfBirth +
+            ", teams=" + teams +
             '}';
     }
 }

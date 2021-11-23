@@ -31,10 +31,9 @@ public class TeamController {
     }
 
     @PostMapping("/teams")
-    public TeamDto newMatch(@RequestBody TeamDto newTeam) {
-        Team team = TeamConverter.toModel(newTeam);
-        teamService.create(team);
-        return TeamConverter.fromModel(team);
+    public TeamDto newMatch(@RequestBody TeamDto newTeamDTO) {
+        teamService.create(TeamConverter.toModel(newTeamDTO));
+        return one(newTeamDTO.getId());
     }
 
     @GetMapping("/teams")

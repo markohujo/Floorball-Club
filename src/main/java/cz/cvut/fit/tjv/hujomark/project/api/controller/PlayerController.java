@@ -5,7 +5,6 @@ import cz.cvut.fit.tjv.hujomark.project.api.converter.PlayerConverter;
 import cz.cvut.fit.tjv.hujomark.project.api.converter.TeamConverter;
 import cz.cvut.fit.tjv.hujomark.project.business.PlayerService;
 
-import cz.cvut.fit.tjv.hujomark.project.domain.Player;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -20,8 +19,8 @@ import java.util.Collection;
  *      GET teams (/players/{id}/teams)
  *      GET matches (/players/{id}/matches)
  *      PUT updateEmail (/players/{id})
- *      TODO PUT addToTeam (/players/{id}/addTeam)
- *      TODO PUT removeFromTeam (/players/{id}/removeTeam)
+ *      PUT addToTeam (/players/{id}/addTeam)
+ *      PUT removeFromTeam (/players/{id}/removeTeam)
  *      DELETE deletePlayer (/players/{id})
  */
 @RestController
@@ -34,10 +33,9 @@ public class PlayerController {
 
     // TODO does not insert new player into db
     @PostMapping("/players")
-    public PlayerDto newPlayer(@RequestBody PlayerDto newPlayer) {
-        Player player = PlayerConverter.toModel(newPlayer);
-        playerService.create(player);
-        return PlayerConverter.fromModel(player);
+    public PlayerDto newPlayer(@RequestBody PlayerDto newPlayerDTO) {
+        playerService.create(PlayerConverter.toModel(newPlayerDTO));
+        return one(newPlayerDTO.getId());
     }
 
     @GetMapping("/players")

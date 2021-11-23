@@ -31,10 +31,8 @@ public abstract class AbstractCrudService<E, K, R extends JpaRepository<E, K>> {
     public void create(E entity) {
         if (exists(entity))
             throw new IllegalArgumentException("Entity already exists.");
-
-        // TODO debug repository.save "The database file is locked"
         System.out.println(entity);
-//        repository.save(entity);
+        repository.save(entity);
     }
 
     public List<E> readAll() {

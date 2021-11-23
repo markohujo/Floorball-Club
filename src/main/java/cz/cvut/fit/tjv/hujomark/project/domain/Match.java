@@ -14,7 +14,7 @@ public class Match {
     private LocalDateTime dateTime;
 
     @ManyToOne
-    @JoinColumn(name = "team_id", nullable = false)
+    @JoinColumn(name = "team_id")
     private Team team;
 
     public Match() {}
@@ -65,8 +65,9 @@ public class Match {
     @Override
     public String toString() {
         return "Match{" +
-                "id=" + id +
-                ", dateTime=" + dateTime +
-                '}';
+            "id=" + id +
+            ", dateTime=" + dateTime +
+            ", team=" + team +
+            '}';
     }
 }

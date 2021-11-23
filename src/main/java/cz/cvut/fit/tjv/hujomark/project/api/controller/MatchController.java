@@ -3,10 +3,8 @@ package cz.cvut.fit.tjv.hujomark.project.api.controller;
 import cz.cvut.fit.tjv.hujomark.project.api.converter.MatchConverter;
 import cz.cvut.fit.tjv.hujomark.project.api.converter.TeamConverter;
 import cz.cvut.fit.tjv.hujomark.project.business.MatchService;
-import cz.cvut.fit.tjv.hujomark.project.domain.Match;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -16,9 +14,9 @@ import java.util.Collection;
  *      POST newMatch (/matches)
  *      GET all (/matches)
  *      GET one (/matches/{id})
- *      TODO GET team (/matches/{id}/team)
+ *      GET team (/matches/{id}/team)
  *      PUT updateDateTime (/matches/{id})
- *      TODO PUT updateTeam (/matches/{id}/team)
+ *      PUT updateTeam (/matches/{id}/team)
  *      DELETE deleteMatch (/matches/{id})
  */
 @RestController
@@ -30,10 +28,9 @@ public class MatchController {
     }
 
     @PostMapping("/matches")
-    public MatchDto newMatch(@RequestBody MatchDto newMatch) {
-        Match match = MatchConverter.toModel(newMatch);
-        matchService.create(match);
-        return MatchConverter.fromModel(match);
+    public MatchDto newMatch(@RequestBody MatchDto newMatchDTO) {
+        matchService.create(MatchConverter.toModel(newMatchDTO));
+        return one(newMatchDTO.getId());
     }
 
     @GetMapping("/matches")
