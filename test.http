@@ -84,7 +84,17 @@ Content-Type: application/json
 
 {
   "id": 5,
-  "dateTime": "20.11.2021 19:00",
+  "dateTime": "20.11.2021 19:00"
+}
+
+
+###
+POST http://localhost:8080/teams
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "Team C"
 }
 
 ###
