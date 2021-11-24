@@ -56,4 +56,10 @@ public class PlayerService extends AbstractCrudService<Player, Long, PlayerJpaRe
     public void removeFromTeam(Long id, Long teamId) {
         teamService.readById(teamId).orElseThrow().removePlayer(readById(id).orElseThrow());
     }
+
+    public void deletePlayerById(Long id) {
+        Player player = readById(id).orElseThrow();
+        player.getTeams().forEach(team -> team.removePlayer(player));
+        deleteById(id);
+    }
 }
