@@ -6,8 +6,7 @@ import java.util.Objects;
 
 @Entity
 public class Match {
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "match_seq")
-    @SequenceGenerator(name = "match_seq", sequenceName = "match_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 

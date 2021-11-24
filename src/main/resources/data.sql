@@ -4,8 +4,8 @@ insert into player values (3, datetime('now'), 'somebody@gmail.com', 'Some', 'Bo
 insert into player values (4, datetime('now'), 'someone.else@gmail.com', 'Someone', 'Else');
 insert into player values (5, datetime('now'), 'idk@gmail.com', 'Idk', 'Idk');
 
-insert into team values (1, 'Team A');
-insert into team values (2, 'Team B');
+insert into team values (2, 'Team A');
+insert into team values (3, 'Team B');
 
 insert into match values (1, datetime('now'), 1);
 insert into match values (2, datetime('now'), 1);

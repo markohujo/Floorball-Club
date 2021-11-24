@@ -7,8 +7,7 @@ import java.util.Set;
 
 @Entity
 public class Player {
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_seq")
-    @SequenceGenerator(name = "player_seq", sequenceName = "player_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
