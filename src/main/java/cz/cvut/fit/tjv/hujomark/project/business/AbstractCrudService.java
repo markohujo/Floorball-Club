@@ -25,16 +25,12 @@ public abstract class AbstractCrudService<E, K, R extends JpaRepository<E, K>> {
     protected abstract boolean exists(E entity);
 
     /**
+     * @return saved entity of type E
      * @throws IllegalArgumentException if the given entity already exists or is null
      */
     @Transactional
     public E create(E entity) {
-//        if (exists(entity))
-//            throw new IllegalArgumentException("Entity already exists.");
-        System.out.println(entity);
-        repository.save(entity);
-        System.out.println(entity);
-        return entity;
+        return repository.save(entity);
     }
 
     public List<E> readAll() {

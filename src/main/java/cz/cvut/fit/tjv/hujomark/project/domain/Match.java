@@ -13,7 +13,7 @@ public class Match {
     private LocalDateTime dateTime;
 
     @ManyToOne
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "team_id", nullable = false)
     private Team team;
 
     public Match() {}

@@ -7,7 +7,6 @@ import cz.cvut.fit.tjv.hujomark.project.domain.Team;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
 

@@ -1,14 +1,23 @@
 package cz.cvut.fit.tjv.hujomark.project.api.converter;
 
 import cz.cvut.fit.tjv.hujomark.project.api.controller.MatchDto;
+import cz.cvut.fit.tjv.hujomark.project.business.TeamService;
 import cz.cvut.fit.tjv.hujomark.project.domain.Match;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Component
 public class MatchConverter {
+    private static TeamService teamService;
+
+    public MatchConverter(TeamService teamService) {
+        MatchConverter.teamService = teamService;
+    }
+
     public static Match toModel(MatchDto matchDto) {
-        return new Match(matchDto.id, matchDto.dateTime);
+        return new Match(matchDto.id, matchDto.dateTime, teamService.readById(matchDto.teamId).orElseThrow());
     }
 
     public static MatchDto fromModel(Match match) {

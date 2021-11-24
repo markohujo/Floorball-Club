@@ -31,11 +31,9 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    // TODO does not insert new player into db
     @PostMapping("/players")
     public PlayerDto newPlayer(@RequestBody PlayerDto newPlayerDTO) {
-        playerService.create(PlayerConverter.toModel(newPlayerDTO));
-        return one(newPlayerDTO.getId());
+        return PlayerConverter.fromModel(playerService.create(PlayerConverter.toModel(newPlayerDTO)));
     }
 
     @GetMapping("/players")

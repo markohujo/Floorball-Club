@@ -3,6 +3,7 @@ package cz.cvut.fit.tjv.hujomark.project.api.controller;
 import cz.cvut.fit.tjv.hujomark.project.api.converter.MatchConverter;
 import cz.cvut.fit.tjv.hujomark.project.api.converter.TeamConverter;
 import cz.cvut.fit.tjv.hujomark.project.business.MatchService;
+import cz.cvut.fit.tjv.hujomark.project.business.TeamService;
 import cz.cvut.fit.tjv.hujomark.project.domain.Match;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,15 +25,13 @@ import java.util.Collection;
 public class MatchController {
     private final MatchService matchService;
 
-    public MatchController(MatchService matchService) {
+    public MatchController(MatchService matchService, TeamService teamService) {
         this.matchService = matchService;
     }
 
     @PostMapping("/matches")
     public MatchDto newMatch(@RequestBody MatchDto newMatchDTO) {
-        Match newMatch = MatchConverter.toModel(newMatchDTO);
-        matchService.create(newMatch);
-        return MatchConverter.fromModel(newMatch);
+        return MatchConverter.fromModel(matchService.create(MatchConverter.toModel(newMatchDTO)));
     }
 
     @GetMapping("/matches")
