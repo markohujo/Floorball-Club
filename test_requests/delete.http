@@ -1,0 +1,35 @@
+###
+GET http://localhost:8080/players/1
+
+###
+DELETE http://localhost:8080/teams/2
+
+###
+GET http://localhost:8080/players/1
+
+###
+GET http://localhost:8080/teams/1
+
+###
+DELETE http://localhost:8080/players/1
+
+###
+GET http://localhost:8080/teams/1
+
+###
+GET http://localhost:8080/matches/1
+
+###
+GET http://localhost:8080/matches/2
+
+###
+DELETE http://localhost:8080/matches/1
+
+###
+DELETE http://localhost:8080/matches/2
+
+###
+GET http://localhost:8080/teams/1
+
+###
+GET http://localhost:8080/teams/3
