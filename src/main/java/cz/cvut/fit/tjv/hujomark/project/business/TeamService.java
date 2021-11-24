@@ -50,16 +50,4 @@ public class TeamService extends AbstractCrudService<Team, Long, TeamJpaReposito
         matchService.deleteById(match);
         update(team);
     }
-
-    public void addOrRemovePlayer(Long id, Long player, boolean remove) {
-        // TODO check if team contains player
-        if (remove) removePlayer(id, player);
-        else addPlayer(id, player);
-    }
-
-    public void addOrRemoveMatch(Long id, Long match, boolean remove) {
-        // TODO check if team contains match
-        if (remove) removeMatch(id, match);
-        else addMatch(id, match);
-    }
 }

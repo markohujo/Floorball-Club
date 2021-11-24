@@ -26,7 +26,7 @@ public abstract class AbstractCrudService<E, K, R extends JpaRepository<E, K>> {
 
     /**
      * @return saved entity of type E
-     * @throws IllegalArgumentException if the given entity already exists or is null
+     * @throws IllegalArgumentException if the given entity is null
      */
     @Transactional
     public E create(E entity) {

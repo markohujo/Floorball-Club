@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.NoSuchElementException;
 
 @Component
 public class MatchService extends AbstractCrudService<Match, Long, MatchJpaRepository> {
@@ -33,11 +34,12 @@ public class MatchService extends AbstractCrudService<Match, Long, MatchJpaRepos
 
     @Transactional
     public void updateTeam(Long id, Long teamId) {
-        if (readById(id).orElseThrow().getTeam().getId().equals(teamId))
-            return;
-
-        readById(id).orElseThrow().getTeam().removeMatch(readById(id).orElseThrow());
-        readById(id).orElseThrow().setTeam(teamService.readById(teamId).orElseThrow());
-        teamService.readById(teamId).orElseThrow().addMatch(readById(id).orElseThrow());
+        Match match = readById(id).orElseThrow();
+        if (!match.getTeam().getId().equals(teamId)) {
+            match.getTeam().removeMatch(match);
+            match.setTeam(teamService.readById(teamId).orElseThrow());
+            teamService.readById(teamId).orElseThrow().addMatch(match);
+            update(match);
+        }
     }
 }

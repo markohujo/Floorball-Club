@@ -62,13 +62,13 @@ public class PlayerController {
         return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
     }
 
-    @PutMapping("/players/{id}/addTeam")
+    @PutMapping("/players/{id}/teams/add")
     public PlayerDto addToTeam(@PathVariable Long id, @RequestParam Long teamId) {
         playerService.addToTeam(id, teamId);
         return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
     }
 
-    @PutMapping("/players/{id}/removeTeam")
+    @PutMapping("/players/{id}/teams/remove")
     public PlayerDto removeFromTeam(@PathVariable Long id, @RequestParam Long teamId) {
         playerService.removeFromTeam(id, teamId);
         return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
