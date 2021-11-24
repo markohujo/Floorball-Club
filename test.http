@@ -126,6 +126,18 @@ GET http://localhost:8080/teams/3/matches
 GET http://localhost:8080/matches/3/team
 
 ###
+PUT http://localhost:8080/matches/3/team?teamId=2
+
+###
+GET http://localhost:8080/matches/3/team
+
+###
+GET http://localhost:8080/teams/2/matches
+
+###
+PUT http://localhost:8080/matches/3/team?teamId=1
+
+###
 PUT http://localhost:8080/players/2?email=newemail@gmail.com
 
 ###
