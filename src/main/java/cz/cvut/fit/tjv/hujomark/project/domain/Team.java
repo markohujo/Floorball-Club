@@ -7,8 +7,7 @@ import java.util.Set;
 
 @Entity
 public class Team {
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "team_seq")
-    @SequenceGenerator(name = "team_seq", sequenceName = "team_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
@@ -20,8 +19,7 @@ public class Team {
                inverseJoinColumns = @JoinColumn(name = "player_id"))
     private Set<Player> players;
 
-    @OneToMany
-    @JoinColumn(name = "team_id", nullable = false)
+    @OneToMany(mappedBy = "team")
     private Set<Match> matches;
 
     public Team() {}

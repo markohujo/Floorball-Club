@@ -10,11 +10,14 @@ public class MatchDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d.M.yyyy HH:mm")
     public LocalDateTime dateTime;
 
+    public Long teamId;
+
     public MatchDto() {}
 
-    public MatchDto(Long id, LocalDateTime dateTime) {
+    public MatchDto(Long id, LocalDateTime dateTime, Long teamId) {
         this.id = id;
         this.dateTime = dateTime;
+        this.teamId = teamId;
     }
 
     public Long getId() {
@@ -31,5 +34,13 @@ public class MatchDto {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public Long getTeamId() {
+        return teamId;
+    }
+
+    public void setTeamId(Long teamId) {
+        this.teamId = teamId;
     }
 }

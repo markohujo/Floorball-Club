@@ -3,11 +3,11 @@ package cz.cvut.fit.tjv.hujomark.project.domain;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Player {
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "player_seq")
-    @SequenceGenerator(name = "player_seq", sequenceName = "player_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
@@ -19,14 +19,18 @@ public class Player {
 
     private LocalDate dateOfBirth;
 
+    @ManyToMany(mappedBy = "players")
+    private Set<Team> teams;
+
     public Player() {}
 
-    public Player(Long id, String name, String surname, String email, LocalDate dateOfBirth) {
+    public Player(Long id, String name, String surname, String email, LocalDate dateOfBirth, Set<Team> teams) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
+        this.teams = teams;
     }
 
     public Long getId() {
@@ -53,6 +57,10 @@ public class Player {
         return dateOfBirth;
     }
 
+    public Set<Team> getTeams() {
+        return teams;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,6 +81,7 @@ public class Player {
             ", surname='" + surname + '\'' +
             ", email='" + email + '\'' +
             ", dateOfBirth=" + dateOfBirth +
+            ", teams=" + teams +
             '}';
     }
 }

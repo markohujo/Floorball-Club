@@ -5,7 +5,6 @@ import cz.cvut.fit.tjv.hujomark.project.api.converter.PlayerConverter;
 import cz.cvut.fit.tjv.hujomark.project.api.converter.TeamConverter;
 import cz.cvut.fit.tjv.hujomark.project.business.PlayerService;
 
-import cz.cvut.fit.tjv.hujomark.project.domain.Player;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -20,6 +19,8 @@ import java.util.Collection;
  *      GET teams (/players/{id}/teams)
  *      GET matches (/players/{id}/matches)
  *      PUT updateEmail (/players/{id})
+ *      PUT addToTeam (/players/{id}/addTeam)
+ *      PUT removeFromTeam (/players/{id}/removeTeam)
  *      DELETE deletePlayer (/players/{id})
  */
 @RestController
@@ -30,12 +31,9 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
-    // TODO does not insert new player into db
     @PostMapping("/players")
-    public PlayerDto newPlayer(@RequestBody PlayerDto newPlayer) {
-        Player player = PlayerConverter.toModel(newPlayer);
-        playerService.create(player);
-        return PlayerConverter.fromModel(player);
+    public PlayerDto newPlayer(@RequestBody PlayerDto newPlayerDTO) {
+        return PlayerConverter.fromModel(playerService.create(PlayerConverter.toModel(newPlayerDTO)));
     }
 
     @GetMapping("/players")
@@ -64,8 +62,20 @@ public class PlayerController {
         return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
     }
 
+    @PutMapping("/players/{id}/teams/add")
+    public PlayerDto addToTeam(@PathVariable Long id, @RequestParam Long teamId) {
+        playerService.addToTeam(id, teamId);
+        return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
+    }
+
+    @PutMapping("/players/{id}/teams/remove")
+    public PlayerDto removeFromTeam(@PathVariable Long id, @RequestParam Long teamId) {
+        playerService.removeFromTeam(id, teamId);
+        return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
+    }
+
     @DeleteMapping("/players/{id}")
     public void deletePlayer(@PathVariable Long id) {
-        playerService.deleteById(id);
+        playerService.deletePlayerById(id);
     }
 }

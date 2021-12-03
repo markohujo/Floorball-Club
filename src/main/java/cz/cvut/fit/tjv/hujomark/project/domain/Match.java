@@ -6,18 +6,27 @@ import java.util.Objects;
 
 @Entity
 public class Match {
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "match_seq")
-    @SequenceGenerator(name = "match_seq", sequenceName = "match_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
     private LocalDateTime dateTime;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id", nullable = false)
+    private Team team;
 
     public Match() {}
 
     public Match(Long id, LocalDateTime dateTime) {
         this.id = id;
         this.dateTime = dateTime;
+    }
+
+    public Match(Long id, LocalDateTime dateTime, Team team) {
+        this.id = id;
+        this.dateTime = dateTime;
+        this.team = team;
     }
 
     public Long getId() {
@@ -30,6 +39,14 @@ public class Match {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     @Override
@@ -47,8 +64,9 @@ public class Match {
     @Override
     public String toString() {
         return "Match{" +
-                "id=" + id +
-                ", dateTime=" + dateTime +
-                '}';
+            "id=" + id +
+            ", dateTime=" + dateTime +
+            ", team=" + team +
+            '}';
     }
 }

@@ -11,7 +11,7 @@ public class TeamService extends AbstractCrudService<Team, Long, TeamJpaReposito
     private final MatchService matchService;
     private final PlayerService playerService;
 
-    protected TeamService(TeamJpaRepository repository, MatchService matchService, @Lazy PlayerService playerService) {
+    protected TeamService(TeamJpaRepository repository, @Lazy MatchService matchService, @Lazy PlayerService playerService) {
         super(repository);
         this.matchService = matchService;
         this.playerService = playerService;
@@ -49,17 +49,5 @@ public class TeamService extends AbstractCrudService<Team, Long, TeamJpaReposito
         // match gets deleted as there is always only one team in relationship with this match
         matchService.deleteById(match);
         update(team);
-    }
-
-    public void addOrRemovePlayer(Long id, Long player, boolean remove) {
-        // TODO check if team contains player
-        if (remove) removePlayer(id, player);
-        else addPlayer(id, player);
-    }
-
-    public void addOrRemoveMatch(Long id, Long match, boolean remove) {
-        // TODO check if team contains match
-        if (remove) removeMatch(id, match);
-        else addMatch(id, match);
     }
 }

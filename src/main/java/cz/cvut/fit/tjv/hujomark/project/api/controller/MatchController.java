@@ -1,11 +1,12 @@
 package cz.cvut.fit.tjv.hujomark.project.api.controller;
 
 import cz.cvut.fit.tjv.hujomark.project.api.converter.MatchConverter;
+import cz.cvut.fit.tjv.hujomark.project.api.converter.TeamConverter;
 import cz.cvut.fit.tjv.hujomark.project.business.MatchService;
+import cz.cvut.fit.tjv.hujomark.project.business.TeamService;
 import cz.cvut.fit.tjv.hujomark.project.domain.Match;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -15,22 +16,22 @@ import java.util.Collection;
  *      POST newMatch (/matches)
  *      GET all (/matches)
  *      GET one (/matches/{id})
+ *      GET team (/matches/{id}/team)
  *      PUT updateDateTime (/matches/{id})
+ *      PUT updateTeam (/matches/{id}/team)
  *      DELETE deleteMatch (/matches/{id})
  */
 @RestController
 public class MatchController {
     private final MatchService matchService;
 
-    public MatchController(MatchService matchService) {
+    public MatchController(MatchService matchService, TeamService teamService) {
         this.matchService = matchService;
     }
 
     @PostMapping("/matches")
-    public MatchDto newMatch(@RequestBody MatchDto newMatch) {
-        Match match = MatchConverter.toModel(newMatch);
-        matchService.create(match);
-        return MatchConverter.fromModel(match);
+    public MatchDto newMatch(@RequestBody MatchDto newMatchDTO) {
+        return MatchConverter.fromModel(matchService.create(MatchConverter.toModel(newMatchDTO)));
     }
 
     @GetMapping("/matches")
@@ -43,9 +44,20 @@ public class MatchController {
         return MatchConverter.fromModel(matchService.readById(id).orElseThrow());
     }
 
+    @GetMapping("matches/{id}/team")
+    public TeamDto team(@PathVariable Long id) {
+        return TeamConverter.fromModel(matchService.readById(id).orElseThrow().getTeam());
+    }
+
     @PutMapping("/matches/{id}")
     public MatchDto updateDateTime(@PathVariable Long id, @RequestParam String dateTimeStr) {
         matchService.updateDateTime(id, dateTimeStr);
+        return MatchConverter.fromModel(matchService.readById(id).orElseThrow());
+    }
+
+    @PutMapping("/matches/{id}/team")
+    public MatchDto updateTeam(@PathVariable Long id, @RequestParam Long teamId) {
+        matchService.updateTeam(id, teamId);
         return MatchConverter.fromModel(matchService.readById(id).orElseThrow());
     }
 

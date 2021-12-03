@@ -1,3 +1,3 @@
 # TJV project
 
-Pre testovanie API je potrebné vložiť dáta do DB, je možné využiť [insert script](src/main/resources/data.sql), ktorý pridá 5 hráčov, 2 tímy a 4 zápasy. Kvôli testovaniu som v [application.properties](src/main/resources/application.properties) nastavil `spring.jpa.hibernate.ddl-auto` na `create`, takže sa DB vždy vytvorí znovu a je potrebné insertnúť dáta. Na testovanie som využil tieto [requesty](test.http).
+Na testovanie som využil requesty v slozke [test_requests](test_requests). Pri testovani som postupne spustal [requesty na insert](test_requests/insert.http), [update](test_requests/update.http) a [delete](test_requests/delete.http) a kontroloval stav pomocou select prikazov a GET requestov, ktore su sucastou suborov s requestami.

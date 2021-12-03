@@ -1,0 +1,126 @@
+POST http://localhost:8080/teams
+Content-Type: application/json
+
+{
+  "name": "Team A"
+}
+
+###
+POST http://localhost:8080/teams
+Content-Type: application/json
+
+{
+"name": "Team B"
+}
+
+###
+POST http://localhost:8080/teams
+Content-Type: application/json
+
+{
+  "name": "Team U18"
+}
+
+###
+GET http://localhost:8080/teams
+
+###
+GET http://localhost:8080/teams/1
+
+###
+POST http://localhost:8080/players
+Content-Type: application/json
+
+{
+  "name": "Player",
+  "surname": "1",
+  "email": "player@gmail.com",
+  "dateOfBirth": "1.1.2020"
+}
+
+###
+POST http://localhost:8080/players
+Content-Type: application/json
+
+{
+  "name": "Player",
+  "surname": "2",
+  "email": "player@gmail.com",
+  "dateOfBirth": "1.1.2020"
+}
+
+###
+POST http://localhost:8080/players
+Content-Type: application/json
+
+{
+  "name": "New",
+  "surname": "Player",
+  "email": "player@gmail.com",
+  "dateOfBirth": "1.1.2020"
+}
+
+###
+POST http://localhost:8080/players
+Content-Type: application/json
+
+{
+  "name": "Newer",
+  "surname": "Player",
+  "email": "player@gmail.com",
+  "dateOfBirth": "1.1.2020"
+}
+
+###
+GET http://localhost:8080/players
+
+###
+GET http://localhost:8080/players/1
+
+###
+GET http://localhost:8080/players/4
+
+###
+POST http://localhost:8080/matches
+Content-Type: application/json
+
+{
+  "dateTime": "30.11.2021 19:30",
+  "teamId": 1
+}
+
+###
+POST http://localhost:8080/matches
+Content-Type: application/json
+
+{
+  "dateTime": "10.12.2021 17:00",
+  "teamId": 3
+}
+
+###
+POST http://localhost:8080/matches
+Content-Type: application/json
+
+{
+  "dateTime": "15.12.2021 18:00",
+  "teamId": 1
+}
+
+###
+GET http://localhost:8080/matches
+
+###
+GET http://localhost:8080/matches/3
+
+###
+GET http://localhost:8080/teams/1/matches
+
+###
+GET http://localhost:8080/teams/2/matches
+
+###
+GET http://localhost:8080/teams/3/matches
+
+###
+GET http://localhost:8080/matches/3/team

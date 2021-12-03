@@ -31,10 +31,8 @@ public class TeamController {
     }
 
     @PostMapping("/teams")
-    public TeamDto newMatch(@RequestBody TeamDto newTeam) {
-        Team team = TeamConverter.toModel(newTeam);
-        teamService.create(team);
-        return TeamConverter.fromModel(team);
+    public TeamDto newMatch(@RequestBody TeamDto newTeamDTO) {
+        return TeamConverter.fromModel(teamService.create(TeamConverter.toModel(newTeamDTO)));
     }
 
     @GetMapping("/teams")
@@ -59,15 +57,27 @@ public class TeamController {
         return MatchConverter.fromModelMany(team.getMatches());
     }
 
-    @PutMapping("/teams/{id}/players")
-    public TeamDto addOrRemovePlayer(@PathVariable Long id, @RequestParam Long player, @RequestParam boolean remove) {
-        teamService.addOrRemovePlayer(id, player, remove);
+    @PutMapping("/teams/{id}/players/add")
+    public TeamDto addPlayer(@PathVariable Long id, @RequestParam Long player) {
+        teamService.addPlayer(id, player);
         return TeamConverter.fromModel(teamService.readById(id).orElseThrow());
     }
 
-    @PutMapping("/teams/{id}/matches")
-    public TeamDto addOrRemoveMatch(@PathVariable Long id, @RequestParam Long match, @RequestParam boolean remove) {
-        teamService.addOrRemoveMatch(id, match, remove);
+    @PutMapping("/teams/{id}/players/remove")
+    public TeamDto removePlayer(@PathVariable Long id, @RequestParam Long player) {
+        teamService.removePlayer(id, player);
+        return TeamConverter.fromModel(teamService.readById(id).orElseThrow());
+    }
+
+    @PutMapping("/teams/{id}/matches/add")
+    public TeamDto addMatch(@PathVariable Long id, @RequestParam Long match) {
+        teamService.addMatch(id, match);
+        return TeamConverter.fromModel(teamService.readById(id).orElseThrow());
+    }
+
+    @PutMapping("/teams/{id}/matches/remove")
+    public TeamDto removeMatch(@PathVariable Long id, @RequestParam Long match) {
+        teamService.removeMatch(id, match);
         return TeamConverter.fromModel(teamService.readById(id).orElseThrow());
     }
 

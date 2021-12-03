@@ -7,11 +7,15 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.NoSuchElementException;
 
 @Component
 public class MatchService extends AbstractCrudService<Match, Long, MatchJpaRepository> {
-    protected MatchService(MatchJpaRepository repository) {
+    private final TeamService teamService;
+
+    protected MatchService(MatchJpaRepository repository, TeamService teamService) {
         super(repository);
+        this.teamService = teamService;
     }
 
     @Override
@@ -26,5 +30,16 @@ public class MatchService extends AbstractCrudService<Match, Long, MatchJpaRepos
         LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, formatter);
         match.setDateTime(dateTime);
         update(match);
+    }
+
+    @Transactional
+    public void updateTeam(Long id, Long teamId) {
+        Match match = readById(id).orElseThrow();
+        if (!match.getTeam().getId().equals(teamId)) {
+            match.getTeam().removeMatch(match);
+            match.setTeam(teamService.readById(teamId).orElseThrow());
+            teamService.readById(teamId).orElseThrow().addMatch(match);
+            update(match);
+        }
     }
 }
