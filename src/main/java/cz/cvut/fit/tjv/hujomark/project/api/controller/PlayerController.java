@@ -5,6 +5,7 @@ import cz.cvut.fit.tjv.hujomark.project.api.converter.PlayerConverter;
 import cz.cvut.fit.tjv.hujomark.project.api.converter.TeamConverter;
 import cz.cvut.fit.tjv.hujomark.project.business.PlayerService;
 
+import cz.cvut.fit.tjv.hujomark.project.domain.Player;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -33,7 +34,8 @@ public class PlayerController {
 
     @PostMapping("/players")
     public PlayerDto newPlayer(@RequestBody PlayerDto newPlayerDTO) {
-        return PlayerConverter.fromModel(playerService.create(PlayerConverter.toModel(newPlayerDTO)));
+        playerService.create(PlayerConverter.toModel(newPlayerDTO));
+        return one(newPlayerDTO.getId());
     }
 
     @GetMapping("/players")

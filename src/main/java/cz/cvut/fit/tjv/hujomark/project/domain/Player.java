@@ -2,6 +2,7 @@ package cz.cvut.fit.tjv.hujomark.project.domain;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
