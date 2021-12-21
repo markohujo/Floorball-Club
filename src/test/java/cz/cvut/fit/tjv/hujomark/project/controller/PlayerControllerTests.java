@@ -190,6 +190,7 @@ public class PlayerControllerTests {
         Set<Match> matches = Set.of(match1, match2);
 
         Mockito.when(playerService.findMatches(1L)).thenReturn(matches);
+        Mockito.when(playerService.readById(1L)).thenReturn(Optional.of(player));
 
         mockMvc.perform(get("/players/1/matches"))
                 .andExpect(status().isOk())
