@@ -272,7 +272,7 @@ public class PlayerControllerTests {
     @Test
     public void testDelete() throws Exception {
         mockMvc.perform(delete("/players/1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
         Mockito.verify(playerService, Mockito.times(1)).deletePlayerById(1L);
     }
 
