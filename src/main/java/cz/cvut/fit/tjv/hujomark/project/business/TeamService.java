@@ -6,6 +6,8 @@ import cz.cvut.fit.tjv.hujomark.project.domain.Team;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.util.NoSuchElementException;
+
 @Component
 public class TeamService extends AbstractCrudService<Team, Long, TeamJpaRepository> {
     private final MatchService matchService;
@@ -22,32 +24,50 @@ public class TeamService extends AbstractCrudService<Team, Long, TeamJpaReposito
         return repository.existsById(entity.getId());
     }
 
-    public void addPlayer(Long id, Long player) {
-        Team team = readById(id).orElseThrow();
-        team.addPlayer(playerService.readById(player).orElseThrow());
+    /**
+     * @throws NoSuchElementException if no team with the given id is found
+     * @throws NoSuchElementException if no player with the given playerId is found
+     */
+    public void addPlayer(Long id, Long playerId) {
+        Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
+        team.addPlayer(playerService.readById(playerId)
+                .orElseThrow(() -> new NoSuchElementException("Player Not Found")));
         update(team);
     }
 
-    public void addMatch(Long id, Long match) {
-        Team team = readById(id).orElseThrow();
-        team.addMatch(matchService.readById(match).orElseThrow());
+    /**
+     * @throws NoSuchElementException if no team with the given id is found
+     * @throws NoSuchElementException if no match with the given matchId is found
+     */
+    public void addMatch(Long id, Long matchId) {
+        Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
+        team.addMatch(matchService.readById(matchId)
+                .orElseThrow(() -> new NoSuchElementException("Match Not Found")));
         update(team);
     }
 
-    public void removePlayer(Long id, Long player) {
-        Team team = readById(id).orElseThrow();
-        team.removePlayer(playerService.readById(player).orElseThrow());
+    /**
+     * @throws NoSuchElementException if no team with the given id is found
+     * @throws NoSuchElementException if no player with the given playerId is found
+     */
+    public void removePlayer(Long id, Long playerId) {
+        Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
+        team.removePlayer(playerService.readById(playerId)
+                .orElseThrow(() -> new NoSuchElementException("Player Not Found")));
         update(team);
     }
 
     /**
      * Apart from removing match from this team's matches, match itself gets deleted
+     * @throws NoSuchElementException if no team with the given id is found
+     * @throws NoSuchElementException if no match with the given matchId is found
      */
-    public void removeMatch(Long id, Long match) {
-        Team team = readById(id).orElseThrow();
-        team.removeMatch(matchService.readById(match).orElseThrow());
+    public void removeMatch(Long id, Long matchId) {
+        Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
+        team.removeMatch(matchService.readById(matchId)
+                .orElseThrow(() -> new NoSuchElementException("Match Not Found")));
         // match gets deleted as there is always only one team in relationship with this match
-        matchService.deleteById(match);
+        matchService.deleteById(matchId);
         update(team);
     }
 }

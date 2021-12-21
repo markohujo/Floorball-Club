@@ -65,20 +65,20 @@ public class MatchController {
     public MatchDto updateDateTime(@PathVariable Long id, @RequestParam String dateTimeStr) {
         try {
             matchService.updateDateTime(id, dateTimeStr);
+            return MatchConverter.fromModel(matchService.readById(id).orElseThrow());
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match Not Found");
         }
-        return MatchConverter.fromModel(matchService.readById(id).orElseThrow());
     }
 
     @PutMapping("/matches/{id}/team")
     public MatchDto updateTeam(@PathVariable Long id, @RequestParam Long teamId) {
         try {
             matchService.updateTeam(id, teamId);
+            return MatchConverter.fromModel(matchService.readById(id).orElseThrow());
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
-        return MatchConverter.fromModel(matchService.readById(id).orElseThrow());
     }
 
     @DeleteMapping("/matches/{id}")
