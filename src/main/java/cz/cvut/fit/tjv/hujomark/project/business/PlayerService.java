@@ -1,6 +1,6 @@
 package cz.cvut.fit.tjv.hujomark.project.business;
 
-import cz.cvut.fit.tjv.hujomark.project.api.controller.TeamDto;
+import cz.cvut.fit.tjv.hujomark.project.api.controller.MatchDto;
 import cz.cvut.fit.tjv.hujomark.project.dao.PlayerJpaRepository;
 import cz.cvut.fit.tjv.hujomark.project.domain.Match;
 import cz.cvut.fit.tjv.hujomark.project.domain.Player;
@@ -8,18 +8,19 @@ import cz.cvut.fit.tjv.hujomark.project.domain.Team;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 @Component
 public class PlayerService extends AbstractCrudService<Player, Long, PlayerJpaRepository> {
     private final TeamService teamService;
+    private final MatchService matchService;
 
-    protected PlayerService(PlayerJpaRepository repository, TeamService teamService) {
+    protected PlayerService(PlayerJpaRepository repository, TeamService teamService, MatchService matchService) {
         super(repository);
         this.teamService = teamService;
+        this.matchService = matchService;
     }
 
     @Override
@@ -74,5 +75,17 @@ public class PlayerService extends AbstractCrudService<Player, Long, PlayerJpaRe
         Player player = readById(id).orElseThrow();
         player.getTeams().forEach(team -> team.removePlayer(player));
         deleteById(id);
+    }
+
+    /**
+     * Creates a new match for each team in which the player with the given id plays
+     * @throws NoSuchElementException if no player with the given id is found
+     */
+    public void createMatchForEachTeam(Long id) {
+        Player player = readById(id).orElseThrow();
+        player.getTeams().forEach(team -> {
+            Match newMatch = matchService.create(new Match(null, LocalDateTime.now(), team));
+            team.addMatch(newMatch);
+        });
     }
 }

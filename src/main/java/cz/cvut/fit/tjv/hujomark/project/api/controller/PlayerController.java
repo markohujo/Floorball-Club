@@ -107,4 +107,14 @@ public class PlayerController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player Not Found");
         }
     }
+
+    @PostMapping("players/{id}/teams/matches/create")
+    public PlayerDto createMatchForEachTeam(@PathVariable Long id) {
+        try {
+            playerService.createMatchForEachTeam(id);
+            return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player Not Found");
+        }
+    }
 }
