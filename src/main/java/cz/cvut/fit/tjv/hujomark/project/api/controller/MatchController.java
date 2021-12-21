@@ -38,8 +38,8 @@ public class MatchController {
             Match match = matchService.create(MatchConverter.toModel(newMatchDTO));
             return one(match.getId());
         } catch (NoSuchElementException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Cannot create match as team with the given teamId does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Cannot create match as team with the given teamId was not found");
         }
     }
 
