@@ -82,6 +82,7 @@ public class MatchController {
     }
 
     @DeleteMapping("/matches/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMatch(@PathVariable Long id) {
         try {
             matchService.deleteById(id);

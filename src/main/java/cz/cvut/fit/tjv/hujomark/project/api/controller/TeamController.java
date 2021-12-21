@@ -105,6 +105,7 @@ public class TeamController {
     }
 
     @DeleteMapping("/teams/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTeam(@PathVariable Long id) {
         try {
             teamService.deleteById(id);

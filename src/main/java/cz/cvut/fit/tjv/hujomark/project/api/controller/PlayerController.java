@@ -99,6 +99,7 @@ public class PlayerController {
     }
 
     @DeleteMapping("/players/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletePlayer(@PathVariable Long id) {
         try {
             playerService.deletePlayerById(id);
