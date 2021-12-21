@@ -6,9 +6,12 @@ import cz.cvut.fit.tjv.hujomark.project.api.converter.TeamConverter;
 import cz.cvut.fit.tjv.hujomark.project.business.PlayerService;
 
 import cz.cvut.fit.tjv.hujomark.project.domain.Player;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 /**
  * REST API for Player entity
@@ -34,8 +37,8 @@ public class PlayerController {
 
     @PostMapping("/players")
     public PlayerDto newPlayer(@RequestBody PlayerDto newPlayerDTO) {
-        playerService.create(PlayerConverter.toModel(newPlayerDTO));
-        return one(newPlayerDTO.getId());
+        Player player = playerService.create(PlayerConverter.toModel(newPlayerDTO));
+        return one(player.getId());
     }
 
     @GetMapping("/players")
@@ -45,39 +48,62 @@ public class PlayerController {
 
     @GetMapping("/players/{id}")
     public PlayerDto one(@PathVariable Long id) {
-        return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
+        return PlayerConverter.fromModel(playerService.readById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Player Not Found")));
     }
 
     @GetMapping("/players/{id}/teams")
     public Collection<TeamDto> teams(@PathVariable Long id) {
-        return TeamConverter.fromModelMany(playerService.findTeams(id));
+        if (playerService.readById(id).isPresent())
+            return TeamConverter.fromModelMany(playerService.findTeams(id));
+        else
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player Not Found");
     }
 
     @GetMapping("/players/{id}/matches")
     public Collection<MatchDto> matches(@PathVariable Long id) {
-        return MatchConverter.fromModelMany(playerService.findMatches(id));
+        if (playerService.readById(id).isPresent())
+            return MatchConverter.fromModelMany(playerService.findMatches(id));
+        else
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player Not Found");
     }
 
     @PutMapping("/players/{id}")
     public PlayerDto updateEmail(@PathVariable Long id, @RequestParam String email) {
-        playerService.updateEmail(id, email);
-        return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
+        try {
+            playerService.updateEmail(id, email);
+            return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player Not Found");
+        }
     }
 
     @PutMapping("/players/{id}/teams/add")
     public PlayerDto addToTeam(@PathVariable Long id, @RequestParam Long teamId) {
-        playerService.addToTeam(id, teamId);
-        return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
+        try {
+            playerService.addToTeam(id, teamId);
+            return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @PutMapping("/players/{id}/teams/remove")
     public PlayerDto removeFromTeam(@PathVariable Long id, @RequestParam Long teamId) {
-        playerService.removeFromTeam(id, teamId);
-        return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
+        try {
+            playerService.removeFromTeam(id, teamId);
+            return PlayerConverter.fromModel(playerService.readById(id).orElseThrow());
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
     @DeleteMapping("/players/{id}")
     public void deletePlayer(@PathVariable Long id) {
-        playerService.deletePlayerById(id);
+        try {
+            playerService.deletePlayerById(id);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player Not Found");
+        }
     }
 }

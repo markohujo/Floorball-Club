@@ -47,6 +47,7 @@ public class PlayerControllerTests {
 
         Mockito.when(playerService.readById(not(eq(1L)))).thenReturn(Optional.empty());
         Mockito.when(playerService.readById(1L)).thenReturn(Optional.of(player));
+        Mockito.when(playerService.create(player)).thenReturn(player);
 
         String json = "{\"id\":1," +
                       "\"name\":\"Marko\"," +
@@ -154,6 +155,7 @@ public class PlayerControllerTests {
         teams.forEach(team -> player.getTeams().add(team));
 
         Mockito.when(playerService.findTeams(1L)).thenReturn(teams);
+        Mockito.when(playerService.readById(1L)).thenReturn(Optional.of(player));
 
         mockMvc.perform(get("/players/1/teams"))
                 .andExpect(status().isOk())

@@ -47,16 +47,29 @@ public class PlayerService extends AbstractCrudService<Player, Long, PlayerJpaRe
         update(player);
     }
 
+    /**
+     * @throws NoSuchElementException if no player with the given id is found
+     * @throws NoSuchElementException if no team with the given teamId is found
+     */
     @Transactional
     public void addToTeam(Long id, Long teamId) {
-        teamService.readById(teamId).orElseThrow().addPlayer(readById(id).orElseThrow());
+        teamService.readById(teamId).orElseThrow(() -> new NoSuchElementException("Team Not Found"))
+                .addPlayer(readById(id).orElseThrow(() -> new NoSuchElementException("Player Not Found")));
     }
 
+    /**
+     * @throws NoSuchElementException if no player with the given id is found
+     * @throws NoSuchElementException if no team with the given teamId is found
+     */
     @Transactional
     public void removeFromTeam(Long id, Long teamId) {
-        teamService.readById(teamId).orElseThrow().removePlayer(readById(id).orElseThrow());
+        teamService.readById(teamId).orElseThrow(() -> new NoSuchElementException("Team Not Found"))
+                .removePlayer(readById(id).orElseThrow(() -> new NoSuchElementException("Player Not Found")));
     }
 
+    /**
+     * @throws NoSuchElementException if no player with the given id is found
+     */
     public void deletePlayerById(Long id) {
         Player player = readById(id).orElseThrow();
         player.getTeams().forEach(team -> team.removePlayer(player));
