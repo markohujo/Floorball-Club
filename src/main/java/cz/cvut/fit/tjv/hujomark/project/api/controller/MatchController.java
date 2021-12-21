@@ -5,9 +5,12 @@ import cz.cvut.fit.tjv.hujomark.project.api.converter.TeamConverter;
 import cz.cvut.fit.tjv.hujomark.project.business.MatchService;
 import cz.cvut.fit.tjv.hujomark.project.business.TeamService;
 import cz.cvut.fit.tjv.hujomark.project.domain.Match;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 /**
  * REST API for Match entity
@@ -31,7 +34,13 @@ public class MatchController {
 
     @PostMapping("/matches")
     public MatchDto newMatch(@RequestBody MatchDto newMatchDTO) {
-        return MatchConverter.fromModel(matchService.create(MatchConverter.toModel(newMatchDTO)));
+        try {
+            Match match = matchService.create(MatchConverter.toModel(newMatchDTO));
+            return one(match.getId());
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "Cannot create match as team with the given teamId does not exist");
+        }
     }
 
     @GetMapping("/matches")
@@ -41,28 +50,43 @@ public class MatchController {
 
     @GetMapping("/matches/{id}")
     public MatchDto one(@PathVariable Long id) {
-        return MatchConverter.fromModel(matchService.readById(id).orElseThrow());
+        return MatchConverter.fromModel(matchService.readById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Match Not Found")));
     }
 
     @GetMapping("matches/{id}/team")
     public TeamDto team(@PathVariable Long id) {
-        return TeamConverter.fromModel(matchService.readById(id).orElseThrow().getTeam());
+        return TeamConverter.fromModel(matchService.readById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Match Not Found"))
+                .getTeam());
     }
 
     @PutMapping("/matches/{id}")
     public MatchDto updateDateTime(@PathVariable Long id, @RequestParam String dateTimeStr) {
-        matchService.updateDateTime(id, dateTimeStr);
+        try {
+            matchService.updateDateTime(id, dateTimeStr);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match Not Found");
+        }
         return MatchConverter.fromModel(matchService.readById(id).orElseThrow());
     }
 
     @PutMapping("/matches/{id}/team")
     public MatchDto updateTeam(@PathVariable Long id, @RequestParam Long teamId) {
-        matchService.updateTeam(id, teamId);
+        try {
+            matchService.updateTeam(id, teamId);
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
         return MatchConverter.fromModel(matchService.readById(id).orElseThrow());
     }
 
     @DeleteMapping("/matches/{id}")
     public void deleteMatch(@PathVariable Long id) {
-        matchService.deleteById(id);
+        try {
+            matchService.deleteById(id);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Match Not Found");
+        }
     }
 }

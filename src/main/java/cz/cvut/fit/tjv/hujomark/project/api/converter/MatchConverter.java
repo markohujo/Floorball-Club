@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 @Component
 public class MatchConverter {
@@ -16,6 +17,9 @@ public class MatchConverter {
         MatchConverter.teamService = teamService;
     }
 
+    /**
+     * @throws NoSuchElementException if no team with matchDto.teamId is found
+     */
     public static Match toModel(MatchDto matchDto) {
         return new Match(matchDto.id, matchDto.dateTime, teamService.readById(matchDto.teamId).orElseThrow());
     }

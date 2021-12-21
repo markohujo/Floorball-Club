@@ -54,7 +54,12 @@ public abstract class AbstractCrudService<E, K, R extends JpaRepository<E, K>> {
         else throw new IllegalArgumentException("Entity does not exist.");
     }
 
+    /**
+     * @throws IllegalArgumentException if the given entity is null or does not exist
+     */
     public void deleteById(K id) {
-        repository.deleteById(id);
+        if (readById(id).isPresent())
+            repository.deleteById(id);
+        else throw new IllegalArgumentException("Entity does not exist.");
     }
 }

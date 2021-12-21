@@ -23,6 +23,9 @@ public class MatchService extends AbstractCrudService<Match, Long, MatchJpaRepos
         return repository.existsById(entity.getId());
     }
 
+    /**
+     * @throws NoSuchElementException if no match with the given id is found
+     */
     @Transactional
     public void updateDateTime(Long id, String dateTimeStr) {
         Match match = readById(id).orElseThrow();
@@ -32,12 +35,16 @@ public class MatchService extends AbstractCrudService<Match, Long, MatchJpaRepos
         update(match);
     }
 
+    /**
+     * @throws NoSuchElementException if no match with the given id is found
+     * @throws NoSuchElementException if no team with the given teamId is found
+     */
     @Transactional
     public void updateTeam(Long id, Long teamId) {
-        Match match = readById(id).orElseThrow();
+        Match match = readById(id).orElseThrow(() -> new NoSuchElementException("Match Not Found"));
         if (!match.getTeam().getId().equals(teamId)) {
             match.getTeam().removeMatch(match);
-            match.setTeam(teamService.readById(teamId).orElseThrow());
+            match.setTeam(teamService.readById(teamId).orElseThrow(() -> new NoSuchElementException("Team Not Found")));
             teamService.readById(teamId).orElseThrow().addMatch(match);
             update(match);
         }
