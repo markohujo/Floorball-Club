@@ -54,7 +54,7 @@ public class TeamControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", Matchers.hasSize(0)));
 
-        Team team1 = new Team(1L, "TeamA", Collections.emptySet(), Collections.emptySet());
+        Team team1 = new Team(1L, "Team A", Collections.emptySet(), Collections.emptySet());
         Team team2 = new Team(2L, null, Collections.emptySet(), Collections.emptySet());
         Team team3 = new Team(3L, null, Collections.emptySet(), Collections.emptySet());
         List<Team> teams = List.of(team1, team2, team3);
@@ -87,5 +87,4 @@ public class TeamControllerTests {
                 .andExpect(jsonPath("$.matches", Matchers.hasSize(0)))
                 .andExpect(jsonPath("$.matches", Matchers.is(Matchers.empty())));
     }
-
 }
