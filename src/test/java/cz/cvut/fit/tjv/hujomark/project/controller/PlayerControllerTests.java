@@ -1,7 +1,6 @@
 package cz.cvut.fit.tjv.hujomark.project.controller;
 
 import cz.cvut.fit.tjv.hujomark.project.api.controller.PlayerController;
-import cz.cvut.fit.tjv.hujomark.project.api.controller.PlayerDto;
 import cz.cvut.fit.tjv.hujomark.project.business.PlayerService;
 import cz.cvut.fit.tjv.hujomark.project.domain.Match;
 import cz.cvut.fit.tjv.hujomark.project.domain.Player;
@@ -9,7 +8,6 @@ import cz.cvut.fit.tjv.hujomark.project.domain.Team;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -17,9 +15,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.AdditionalMatchers.not;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -42,17 +37,15 @@ public class PlayerControllerTests {
 
     @Test
     public void testCreateNew() throws Exception {
-        Player player = new Player(1L, "Marko", "Hujo", "hujomark@fit.cvut.cz",
-                LocalDate.of(2001, Month.AUGUST, 20), new HashSet<>());
-        Mockito.when(playerService.readById(not(eq(1L)))).thenReturn(Optional.empty());
+        Player player = new Player(1L, "Marko", "Hujo", null, null, Collections.emptySet());
         Mockito.when(playerService.readById(1L)).thenReturn(Optional.of(player));
         Mockito.when(playerService.create(player)).thenReturn(player);
 
         String json = "{\"id\":1," +
                       "\"name\":\"Marko\"," +
                       "\"surname\":\"Hujo\"," +
-                      "\"email\":\"hujomark@fit.cvut.cz\"," +
-                      "\"dateOfBirth\":\"20.8.2001\"}";
+                      "\"email\":\"\"," +
+                      "\"dateOfBirth\":\"\"}";
 
         mockMvc.perform(post("/players")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -61,8 +54,6 @@ public class PlayerControllerTests {
                 .andExpect(jsonPath("$.id", Matchers.is(1)))
                 .andExpect(jsonPath("$.name", Matchers.is("Marko")))
                 .andExpect(jsonPath("$.surname", Matchers.is("Hujo")))
-                .andExpect(jsonPath("$.email", Matchers.is("hujomark@fit.cvut.cz")))
-                .andExpect(jsonPath("$.dateOfBirth", Matchers.is("20.8.2001")))
                 .andExpect(jsonPath("$.teams", Matchers.hasSize(0)));
     }
 
@@ -105,6 +96,7 @@ public class PlayerControllerTests {
 
         mockMvc.perform(get("/players/1"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", Matchers.is(1)))
                 .andExpect(jsonPath("$.name", Matchers.is("Marko")))
                 .andExpect(jsonPath("$.surname", Matchers.is("Hujo")))
                 .andExpect(jsonPath("$.teams", Matchers.hasSize(0)))
