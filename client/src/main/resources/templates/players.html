@@ -35,15 +35,30 @@
         <tr th:each="player: ${players}">
           <td th:text="${player.name}"></td>
           <td th:text="${player.surname}"></td>
-          <td th:text="${player.email}"></td>
+          <td>
+            <label>
+              <input type="email" th:value="${player.email}" id="player_email">
+            </label>
+          </td>
           <td th:text="${player.dateOfBirth}"></td>
           <td><a th:href="@{'/players/teams?id=' + ${player.id}}">Teams</a></td>
           <td><a th:href="@{'/players/matches?id=' + ${player.id}}">Matches</a></td>
+          <td><button class="btn btn-primary" id="edit_button" disabled>Change Email</button></td>
           <td><a th:href="@{'/players/delete?id=' + ${player.id}}" class="btn btn-secondary">Delete</a></td>
         </tr>
       </tbody>
     </table>
+    <a th:href="@{'/players/add'}" class="btn btn-primary">Add Player</a>
   </div>
 </div>
 </body>
+
+<script>
+  import axios from "axios";
+  let button = document.getElementById("edit_button");
+  let email = document.getElementById("player_email");
+  email.addEventListener("input", function (e) {
+    button.disabled = email.value === email.defaultValue;
+  })
+</script>
 </html>
