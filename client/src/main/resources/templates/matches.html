@@ -1,10 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Floorball Club | Matches</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
-
+<div class="players">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <h1 id="main_headline">Matches</h1>
+        </div>
+    </div>
+    <div class="container">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Date and Time</th>
+                <th scope="col">Team ID</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="match: ${matches}">
+                <td th:text="${match.dateTime}"></td>
+                <td th:text="${match.getTeamId()}"></td>
+                <td><a th:href="@{'/matches/edit?id=' + ${match.id}}" class="btn btn-secondary">Edit</a></td>
+                <td><a th:href="@{'/matches/delete?id=' + ${match.id}}" class="btn btn-secondary">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
+        <a th:href="@{'/matches/add'}" class="btn btn-primary">Add Match</a>
+    </div>
+</div>
 </body>
 </html>

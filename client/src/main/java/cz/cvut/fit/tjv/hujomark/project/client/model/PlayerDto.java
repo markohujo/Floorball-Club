@@ -1,6 +1,7 @@
 package cz.cvut.fit.tjv.hujomark.project.client.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -15,6 +16,7 @@ public class PlayerDto {
     public String email;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "d.M.yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     public LocalDate dateOfBirth;
 
     public Set<Long> teams;
