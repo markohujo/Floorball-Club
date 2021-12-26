@@ -47,6 +47,7 @@
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
+                <th scope="col">ID</th>
                 <th scope="col">Date and Time</th>
                 <th scope="col">Team ID</th>
                 <th scope="col"></th>
@@ -55,6 +56,7 @@
             </thead>
             <tbody>
             <tr th:each="match: ${matches}">
+                <td th:text="${match.id}"></td>
                 <td th:text="${match.dateTime}"></td>
                 <td th:text="${match.getTeamId()}"></td>
                 <td><a th:href="@{'/matches/edit?id=' + ${match.id}}" class="btn btn-primary">Edit</a></td>

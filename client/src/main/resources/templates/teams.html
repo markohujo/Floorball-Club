@@ -47,6 +47,7 @@
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
+                <th scope="col">ID</th>
                 <th scope="col">Name</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -54,6 +55,7 @@
             </thead>
             <tbody>
             <tr th:each="team: ${teams}">
+                <td th:text="${team.id}"></td>
                 <td th:text="${team.name}"></td>
                 <td><a th:href="@{'/teams/players?id=' + ${team.id}}">Players</a></td>
                 <td><a th:href="@{'/teams/matches?id=' + ${team.id}}">Matches</a></td>
