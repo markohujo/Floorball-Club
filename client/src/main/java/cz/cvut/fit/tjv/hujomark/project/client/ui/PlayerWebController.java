@@ -28,6 +28,12 @@ public class PlayerWebController {
         return "teams";
     }
 
+    @GetMapping("/matches")
+    public String matches(@RequestParam Long id, Model model) {
+        model.addAttribute("matches", playerClient.matches(id));
+        return "matches";
+    }
+
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("player", new PlayerDto());
@@ -52,12 +58,6 @@ public class PlayerWebController {
     public String editSubmit(@ModelAttribute PlayerDto player, Model model) {
         playerClient.update(player.email);
         return "redirect:/players";
-    }
-
-    @GetMapping("/matches")
-    public String matches(@RequestParam Long id, Model model) {
-        // TODO
-        return "matches";
     }
 
     @GetMapping("/delete")

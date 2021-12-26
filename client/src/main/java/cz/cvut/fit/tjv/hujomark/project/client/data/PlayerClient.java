@@ -1,5 +1,6 @@
 package cz.cvut.fit.tjv.hujomark.project.client.data;
 
+import cz.cvut.fit.tjv.hujomark.project.client.model.MatchDto;
 import cz.cvut.fit.tjv.hujomark.project.client.model.PlayerDto;
 import cz.cvut.fit.tjv.hujomark.project.client.model.TeamDto;
 import org.springframework.beans.factory.annotation.Value;
@@ -58,6 +59,14 @@ public class PlayerClient {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToFlux(TeamDto.class);
+    }
+
+    public Flux<MatchDto> matches(Long id) {
+            return webClient.get()
+                    .uri("/{id}/matches", id)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .bodyToFlux(MatchDto.class);
     }
 
     public void delete(Long id) {
