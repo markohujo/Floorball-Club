@@ -68,8 +68,8 @@
                         </label>
                     </td>
                     <td th:text="${player.dateOfBirth}"></td>
-                    <td><a type="button" class="btn btn-secondary" th:href="@{'/players/teams?id=' + ${player.id}}">Teams</a></td>
-                    <td><a type="button" class="btn btn-secondary" th:href="@{'/players/matches?id=' + ${player.id}}">Matches</a></td>
+                    <td><a type="button" class="btn btn-primary" th:href="@{'/players/teams?id=' + ${player.id}}">Teams</a></td>
+                    <td><a type="button" class="btn btn-primary" th:href="@{'/players/matches?id=' + ${player.id}}">Matches</a></td>
                     <td>
                         <button type="submit" class="btn btn-primary" id="submit_btn" disabled>Save Changes</button>
                     </td>

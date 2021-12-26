@@ -27,7 +27,7 @@
                         <a href="/players" class="nav-link">Players</a>
                     </li>
                     <li class="navbar-nav">
-                        <a href="#" class="nav-link">Teams</a>
+                        <a href="/teams" class="nav-link">Teams</a>
                     </li>
                     <li class="navbar-nav">
                         <a href="/matches" class="nav-link">Matches</a>
@@ -39,7 +39,7 @@
 
     <div class="container">
         <div class="row">
-            <h1 id="main_headline">Teams</h1>
+            <h1 id="main_headline">Players that play in <span th:text="${team.name}"></span></h1>
         </div>
     </div>
 
@@ -49,20 +49,21 @@
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Name</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
+                <th scope="col">Surname</th>
+                <th scope="col">Email</th>
+                <th scope="col">Date Of Birth</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="team: ${teams}">
-                <td th:text="${team.id}"></td>
-                <td th:text="${team.name}"></td>
-                <td><a th:href="@{'/teams/details?id=' + ${team.id}}" class="btn btn-primary">Details</a></td>
-                <td><a th:href="@{'/teams/delete?id=' + ${team.id}}" class="btn btn-danger">Delete</a></td>
+            <tr th:each="player: ${players}">
+                <td th:text="${player.id}"></td>
+                <td th:text="${player.name}"></td>
+                <td th:text="${player.surname}"></td>
+                <td th:text="${player.email}"></td>
+                <td th:text="${player.dateOfBirth}"></td>
             </tr>
             </tbody>
         </table>
-        <a th:href="@{'/teams/add'}" class="btn btn-primary">Add Team</a>
     </div>
 </div>
 </body>
