@@ -1,11 +1,11 @@
 package cz.cvut.fit.tjv.hujomark.project.client.ui;
 
 import cz.cvut.fit.tjv.hujomark.project.client.data.TeamClient;
+import cz.cvut.fit.tjv.hujomark.project.client.model.PlayerDto;
+import cz.cvut.fit.tjv.hujomark.project.client.model.TeamDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/teams")
@@ -21,6 +21,18 @@ public class TeamWebController {
     public String list(Model model) {
         model.addAttribute("teams", teamClient.readAll());
         return "teams";
+    }
+
+    @GetMapping("/add")
+    public String add(Model model) {
+        model.addAttribute("team", new TeamDto());
+        return "teamAdd";
+    }
+
+    @PostMapping("/add")
+    public String addSubmit(@ModelAttribute PlayerDto player, Model model) {
+        teamClient.create(player).subscribe();
+        return "redirect:/teams";
     }
 
     @GetMapping("/details")

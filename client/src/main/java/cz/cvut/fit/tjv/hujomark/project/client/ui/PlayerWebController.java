@@ -48,7 +48,6 @@ public class PlayerWebController {
 
     @PostMapping("/add")
     public String addSubmit(@ModelAttribute PlayerDto player, Model model) {
-        System.out.println("here" + player.name);
         playerClient.create(player).subscribe();
         return "redirect:/players";
     }

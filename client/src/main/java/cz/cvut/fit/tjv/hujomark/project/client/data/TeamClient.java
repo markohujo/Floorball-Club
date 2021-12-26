@@ -29,6 +29,15 @@ public class TeamClient {
         this.webClient = WebClient.create(backendUrl + "/teams");;
     }
 
+    public Mono<TeamDto> create(PlayerDto player) {
+        return webClient.post()
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .bodyValue(player)
+                .retrieve()
+                .bodyToMono(TeamDto.class);
+    }
+
     public Flux<TeamDto> readAll() {
         return webClient.get()
                 .retrieve()
