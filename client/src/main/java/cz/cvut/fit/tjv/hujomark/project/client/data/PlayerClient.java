@@ -114,4 +114,12 @@ public class PlayerClient {
                 .retrieve()
                 .toBodilessEntity().subscribe();
     }
+
+    public void createMatchForEachTeam() {
+        webClient.post()
+                .uri("/{id}/teams/matches/create", currentId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve().toBodilessEntity().subscribe();
+    }
 }

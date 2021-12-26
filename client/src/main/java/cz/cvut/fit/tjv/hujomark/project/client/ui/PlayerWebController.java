@@ -1,6 +1,7 @@
 package cz.cvut.fit.tjv.hujomark.project.client.ui;
 
 import cz.cvut.fit.tjv.hujomark.project.client.data.PlayerClient;
+import cz.cvut.fit.tjv.hujomark.project.client.data.TeamClient;
 import cz.cvut.fit.tjv.hujomark.project.client.model.PlayerDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,11 +10,14 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/players")
 public class PlayerWebController {
+
     private final PlayerClient playerClient;
 
+    private final TeamClient teamClient;
 
-    public PlayerWebController(PlayerClient playerClient) {
+    public PlayerWebController(PlayerClient playerClient, TeamClient teamClient) {
         this.playerClient = playerClient;
+        this.teamClient = teamClient;
     }
 
     @GetMapping
@@ -51,6 +55,8 @@ public class PlayerWebController {
     public String edit(@RequestParam Long id, Model model) {
         playerClient.setCurrentId(id);
         model.addAttribute("player", playerClient.readOne(id));
+        model.addAttribute("allTeams", teamClient.readAll());
+        model.addAttribute("playerTeams", playerClient.teams(id));
         return "playerEdit";
     }
 
@@ -69,6 +75,14 @@ public class PlayerWebController {
     @PostMapping("/removeFromTeam")
     public String removeFromTeam (@ModelAttribute PlayerDto player, Model model) {
         playerClient.removeFromTeam(player.tmpTeamId);
+        return "redirect:/players";
+    }
+
+    @PostMapping("/createMatch")
+    public String createMatchForEachTeam (Model model) {
+        System.out.println("here: create match");
+        System.out.println(playerClient.getCurrentId());
+        playerClient.createMatchForEachTeam();
         return "redirect:/players";
     }
 

@@ -78,6 +78,8 @@
             </table>
         </form>
 
+        <!-- Add player to team-->
+
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1" id="btn1">
             Add To Team
@@ -87,24 +89,31 @@
         <form th:action="@{'/players/addToTeam'}" th:object="${player}" method="post">
             <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1"
                  aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel1">Add Player <span th:text="${player.id}"></span> To Team</h5>
+                            <h5 class="modal-title" id="exampleModalLabel1">Add Player <span
+                                    th:text="${player.id}"></span> To Team</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label for="team_id">Team ID</label>
-                            <input th:field="*{tmpTeamId}" type="number" id="team_id"/>
+                            <label for="team_add_id">Team ID</label>
+                            <select th:field="*{tmpTeamId}" class="form-select" aria-label="Default select example"
+                                    id="team_add_id">
+                                <option th:each="team: ${allTeams}" th:value="${team.id}"
+                                        th:text="${team.name}"></option>
+                            </select>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="add_btn" disabled>Add</button>
+                            <button type="submit" class="btn btn-primary" id="add_btn">Add</button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
+
+        <!-- Remove player from team-->
 
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" id="btn2">
@@ -115,54 +124,32 @@
         <form th:action="@{'/players/removeFromTeam'}" th:object="${player}" method="post">
             <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2"
                  aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel2">Remove Player <span th:text="${player.id}"></span> From Team</h5>
+                            <h5 class="modal-title" id="exampleModalLabel2">Remove Player <span
+                                    th:text="${player.id}"></span> From Team</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <label for="team_remove_id">Team ID</label>
-                            <select th:each="team_id in ${player.teams}" class="form-select" aria-label="Default select example" id="team_remove_id">
-                                <option selected>Open to choose team ID</option>
-                                <option th:value="${team_id}" value="1"></option>
+                            <select th:field="*{tmpTeamId}" class="form-select" aria-label="Default select example"
+                                    id="team_remove_id">
+                                <option th:each="team: ${playerTeams}" th:value="${team.id}"
+                                        th:text="${team.name}"></option>
                             </select>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="remove_btn" disabled>Remove</button>
+                            <button type="submit" class="btn btn-primary" id="remove_btn">Remove</button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
 
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3" id="btn3">
-            Create New Match For Each Team
-        </button>
-
-        <!-- Modal -->
-        <form th:action="@{'/players/addToTeam'}" th:object="${player}" method="post">
-            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel3"
-                 aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel3">Create New Match For Each Team</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <label for="team_id">Team ID</label>
-                            <input th:field="*{tmpTeamId}" type="number" id="team_id"/>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="add_btn" disabled>Create</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <form th:action="@{/players/createMatch}" method="post">
+            <button type="submit" class="btn btn-primary" id="btn3">Create New Match For Each Team</button>
         </form>
 
     </div>
@@ -193,12 +180,6 @@
     const email = document.getElementById("player_email");
     email.addEventListener("input", function () {
         button.disabled = email.value === email.defaultValue;
-    })
-
-    const add_btn = document.getElementById("add_btn");
-    const team_id = document.getElementById("team_id");
-    team_id.addEventListener("input", function () {
-        add_btn.disabled = (team_id.value == null || team_id.value <= 0);
     })
 </script>
 
