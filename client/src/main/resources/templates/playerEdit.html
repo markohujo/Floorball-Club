@@ -95,7 +95,7 @@
                         </div>
                         <div class="modal-body">
                             <label for="team_id">Team ID</label>
-                            <input th:field="*{newTeamId}" type="number" id="team_id"/>
+                            <input th:field="*{tmpTeamId}" type="number" id="team_id"/>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -112,7 +112,7 @@
         </button>
 
         <!-- Modal -->
-        <form th:action="@{'/players/addToTeam'}" th:object="${player}" method="post">
+        <form th:action="@{'/players/removeFromTeam'}" th:object="${player}" method="post">
             <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2"
                  aria-hidden="true">
                 <div class="modal-dialog">
@@ -122,12 +122,15 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label for="team_id">Team ID</label>
-                            <input th:field="*{newTeamId}" type="number" id="team_id"/>
+                            <label for="team_remove_id">Team ID</label>
+                            <select th:each="team_id in ${player.teams}" class="form-select" aria-label="Default select example" id="team_remove_id">
+                                <option selected>Open to choose team ID</option>
+                                <option th:value="${team_id}" value="1"></option>
+                            </select>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="add_btn" disabled>Remove</button>
+                            <button type="submit" class="btn btn-primary" id="remove_btn" disabled>Remove</button>
                         </div>
                     </div>
                 </div>
@@ -151,7 +154,7 @@
                         </div>
                         <div class="modal-body">
                             <label for="team_id">Team ID</label>
-                            <input th:field="*{newTeamId}" type="number" id="team_id"/>
+                            <input th:field="*{tmpTeamId}" type="number" id="team_id"/>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

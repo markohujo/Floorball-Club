@@ -21,7 +21,7 @@ public class PlayerDto {
 
     public Set<Long> teams;
 
-    public Long newTeamId;
+    public Long tmpTeamId;
 
     public PlayerDto() {}
 
@@ -82,11 +82,11 @@ public class PlayerDto {
         this.teams = teams;
     }
 
-    public Long getNewTeamId() {
-        return newTeamId;
+    public Long getTmpTeamId() {
+        return tmpTeamId;
     }
 
-    public void setNewTeamId(Long newTeamId) {
-        this.newTeamId = newTeamId;
+    public void setTmpTeamId(Long tmpTeamId) {
+        this.tmpTeamId = tmpTeamId;
     }
 }

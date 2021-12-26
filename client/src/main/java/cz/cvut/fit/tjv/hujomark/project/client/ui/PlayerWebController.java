@@ -61,8 +61,14 @@ public class PlayerWebController {
     }
 
     @PostMapping("/addToTeam")
-    public String addToTeamSubmit (@ModelAttribute PlayerDto player, Model model) {
-        playerClient.addToTeam(player.newTeamId);
+    public String addToTeam (@ModelAttribute PlayerDto player, Model model) {
+        playerClient.addToTeam(player.tmpTeamId);
+        return "redirect:/players";
+    }
+
+    @PostMapping("/removeFromTeam")
+    public String removeFromTeam (@ModelAttribute PlayerDto player, Model model) {
+        playerClient.removeFromTeam(player.tmpTeamId);
         return "redirect:/players";
     }
 

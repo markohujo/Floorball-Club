@@ -91,14 +91,24 @@ public class PlayerClient {
                 .subscribe(x -> {}, e -> {});
     }
 
-    public void addToTeam(Long newTeamId) {
-        System.out.println(currentId);
-        System.out.println(newTeamId);
+    public void addToTeam(Long teamId) {
         webClient.put()
                 .uri(uriBuilder -> uriBuilder
                         .path("/{id}/teams/add")
                         .queryParam("teamId", "{teamId}")
-                        .build(currentId, newTeamId))
+                        .build(currentId, teamId))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .toBodilessEntity().subscribe();
+    }
+
+    public void removeFromTeam(Long teamId) {
+        webClient.put()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/{id}/teams/remove")
+                        .queryParam("teamId", "{teamId}")
+                        .build(currentId, teamId))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
