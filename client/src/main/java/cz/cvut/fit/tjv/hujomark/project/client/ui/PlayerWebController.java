@@ -29,13 +29,15 @@ public class PlayerWebController {
     @GetMapping("/teams")
     public String teams(@RequestParam Long id, Model model) {
         model.addAttribute("teams", playerClient.teams(id));
-        return "teams";
+        model.addAttribute("player", playerClient.readOne(id));
+        return "playerTeams";
     }
 
     @GetMapping("/matches")
     public String matches(@RequestParam Long id, Model model) {
         model.addAttribute("matches", playerClient.matches(id));
-        return "matches";
+        model.addAttribute("player", playerClient.readOne(id));
+        return "playerMatches";
     }
 
     @GetMapping("/add")
@@ -51,13 +53,13 @@ public class PlayerWebController {
         return "redirect:/players";
     }
 
-    @GetMapping("/edit")
-    public String edit(@RequestParam Long id, Model model) {
+    @GetMapping("/details")
+    public String details(@RequestParam Long id, Model model) {
         playerClient.setCurrentId(id);
         model.addAttribute("player", playerClient.readOne(id));
         model.addAttribute("allTeams", teamClient.readAll());
         model.addAttribute("playerTeams", playerClient.teams(id));
-        return "playerEdit";
+        return "playerDetails";
     }
 
     @PostMapping("/edit")
