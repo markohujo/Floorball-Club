@@ -108,7 +108,7 @@ public class TeamController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTeam(@PathVariable Long id) {
         try {
-            teamService.deleteById(id);
+            teamService.deleteTeamById(id);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team Not Found");
         }

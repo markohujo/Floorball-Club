@@ -70,4 +70,14 @@ public class TeamService extends AbstractCrudService<Team, Long, TeamJpaReposito
         matchService.deleteById(matchId);
         update(team);
     }
+
+    /**
+     * Apart from deleting this team, all matches played by this team are deleted
+     * @throws NoSuchElementException if no team with the given id is found
+     */
+    public void deleteTeamById(Long id) {
+        Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
+        team.getMatches().forEach(match -> matchService.deleteById(match.getId()));
+        deleteById(id);
+    }
 }
