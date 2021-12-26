@@ -11,6 +11,8 @@ public class TeamDto {
 
     public Set<Long> matches;
 
+    public Long tmpId;
+
     public TeamDto() {}
 
     public TeamDto(Long id, String name, Set<Long> players, Set<Long> matches) {
@@ -50,5 +52,13 @@ public class TeamDto {
 
     public void setMatches(Set<Long> matches) {
         this.matches = matches;
+    }
+
+    public Long getTmpId() {
+        return tmpId;
+    }
+
+    public void setTmpId(Long tmpId) {
+        this.tmpId = tmpId;
     }
 }

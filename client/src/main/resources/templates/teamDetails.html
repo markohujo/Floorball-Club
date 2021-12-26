@@ -65,6 +65,41 @@
             </tbody>
         </table>
 
+        <!-- Add player to team-->
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1" id="btn1">
+            Add Player To Team
+        </button>
+
+        <!-- Modal -->
+        <form th:action="@{'/teams/addPlayer'}" th:object="${team}" method="post">
+            <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel1">Add Player To <span
+                                    th:text="${team.name}"></span></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="team_add_id">Player ID</label>
+                            <select th:field="*{tmpId}" class="form-select" aria-label="Default select example"
+                                    id="team_add_id">
+                                <option th:each="player: ${allPlayers}" th:value="${player.id}"
+                                        th:text="${player.name} + ' ' + ${player.surname}"></option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="add_btn">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
     </div>
 </div>
 

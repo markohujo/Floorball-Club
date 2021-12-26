@@ -76,4 +76,16 @@ public class TeamClient {
                 .toBodilessEntity()
                 .subscribe();
     }
+
+    public void addPlayer(Long playerId) {
+        webClient.put()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/{id}/players/add")
+                        .queryParam("player", "{player}")
+                        .build(currentId, playerId))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .toBodilessEntity().subscribe();
+    }
 }
