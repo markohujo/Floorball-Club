@@ -43,4 +43,10 @@ public class TeamWebController {
         model.addAttribute("team", teamClient.readOne(id));
         return "teamMatches";
     }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam Long id, Model model) {
+        teamClient.delete(id);
+        return "redirect:/teams";
+    }
 }

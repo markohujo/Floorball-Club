@@ -58,4 +58,13 @@ public class TeamClient {
                 .retrieve()
                 .bodyToFlux(MatchDto.class);
     }
+
+    public void delete(Long id) {
+        webClient.delete()
+                .uri("/{id}", id)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .toBodilessEntity()
+                .subscribe();
+    }
 }
