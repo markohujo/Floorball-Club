@@ -21,6 +21,8 @@ public class PlayerDto {
 
     public Set<Long> teams;
 
+    public Long newTeamId;
+
     public PlayerDto() {}
 
     public PlayerDto(Long id, String name, String surname, String email, LocalDate dateOfBirth, Set<Long> teams) {
@@ -78,5 +80,13 @@ public class PlayerDto {
 
     public void setTeams(Set<Long> teams) {
         this.teams = teams;
+    }
+
+    public Long getNewTeamId() {
+        return newTeamId;
+    }
+
+    public void setNewTeamId(Long newTeamId) {
+        this.newTeamId = newTeamId;
     }
 }

@@ -57,8 +57,8 @@
             <tr th:each="match: ${matches}">
                 <td th:text="${match.dateTime}"></td>
                 <td th:text="${match.getTeamId()}"></td>
-                <td><a th:href="@{'/matches/edit?id=' + ${match.id}}" class="btn btn-secondary">Edit</a></td>
-                <td><a th:href="@{'/matches/delete?id=' + ${match.id}}" class="btn btn-secondary">Delete</a></td>
+                <td><a th:href="@{'/matches/edit?id=' + ${match.id}}" class="btn btn-primary">Edit</a></td>
+                <td><a th:href="@{'/matches/delete?id=' + ${match.id}}" class="btn btn-danger">Delete</a></td>
             </tr>
             </tbody>
         </table>
@@ -66,4 +66,14 @@
     </div>
 </div>
 </body>
+<style>
+    #main_headline {
+        margin-top: 8rem;
+        text-align: center;
+    }
+
+    .card, .table{
+        margin-top: 5rem;
+    }
+</style>
 </html>

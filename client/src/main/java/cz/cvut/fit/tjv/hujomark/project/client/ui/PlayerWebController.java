@@ -60,6 +60,12 @@ public class PlayerWebController {
         return "redirect:/players";
     }
 
+    @PostMapping("/addToTeam")
+    public String addToTeamSubmit (@ModelAttribute PlayerDto player, Model model) {
+        playerClient.addToTeam(player.newTeamId);
+        return "redirect:/players";
+    }
+
     @GetMapping("/delete")
     public String delete(@RequestParam Long id, Model model) {
         playerClient.delete(id);

@@ -57,7 +57,7 @@
                 <td th:text="${team.name}"></td>
                 <td><a th:href="@{'/teams/players?id=' + ${team.id}}">Players</a></td>
                 <td><a th:href="@{'/teams/matches?id=' + ${team.id}}">Matches</a></td>
-                <td><a th:href="@{'/teams/delete?id=' + ${team.id}}" class="btn btn-secondary">Delete</a></td>
+                <td><a th:href="@{'/teams/delete?id=' + ${team.id}}" class="btn btn-danger">Delete</a></td>
             </tr>
             </tbody>
         </table>
@@ -71,7 +71,7 @@
         text-align: center;
     }
 
-    .table{
+    .card, .table{
         margin-top: 5rem;
     }
 </style>

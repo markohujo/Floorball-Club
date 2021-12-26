@@ -85,8 +85,23 @@ public class PlayerClient {
                         .queryParam("email", "{email}")
                         .build(currentId, email))
                 .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .toBodilessEntity()
                 .subscribe(x -> {}, e -> {});
+    }
+
+    public void addToTeam(Long newTeamId) {
+        System.out.println(currentId);
+        System.out.println(newTeamId);
+        webClient.put()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/{id}/teams/add")
+                        .queryParam("teamId", "{teamId}")
+                        .build(currentId, newTeamId))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .toBodilessEntity().subscribe();
     }
 }
