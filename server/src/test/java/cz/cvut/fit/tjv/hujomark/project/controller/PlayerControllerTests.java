@@ -149,13 +149,9 @@ public class PlayerControllerTests {
                 .andExpect(jsonPath("$[2].id", Matchers.is(1002)));
     }
 
-    // OK
-
     @Test
     public void testUpdateEmail() throws Exception {
-        Player player = new Player(1L, "Marko", "Hujo", "hujomark@fit.cvut.cz",
-                LocalDate.of(2001, Month.AUGUST, 20), new HashSet<>());
-
+        Player player = new Player(1L, null, null, "hujomark@fit.cvut.cz", null, new HashSet<>());
         Mockito.when(playerService.readById(1L)).thenReturn(Optional.of(player));
 
         mockMvc.perform(put("/players/1").param("email", "hujomark@fit.cvut.cz"))
@@ -171,14 +167,18 @@ public class PlayerControllerTests {
         String emailProvided = stringArgumentCaptor.getValue();
         assertEquals(idProvided, 1);
         assertEquals(emailProvided, "hujomark@fit.cvut.cz");
-    }
 
+        Mockito.when(playerService.readById(1L)).thenReturn(Optional.empty());
+        mockMvc.perform(put("/players/1").param("email", "email@email.com"))
+                .andExpect(status().isNotFound());
+        Mockito.verify(playerService, Mockito.times(2))
+                .updateEmail(longArgumentCaptor.capture(), stringArgumentCaptor.capture());
+    }
+    
     @Test
     public void testAddToTeam() throws Exception {
         Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
-        Player player = new Player(1L, "Marko", "Hujo", "hujomark@fit.cvut.cz",
-                LocalDate.of(2001, Month.AUGUST, 20), Set.of(team));
-
+        Player player = new Player(1L, null, null, null, null, Set.of(team));
         Mockito.when(playerService.readById(1L)).thenReturn(Optional.of(player));
 
         mockMvc.perform(put("/players/1/teams/add").param("teamId", "100"))
@@ -194,13 +194,17 @@ public class PlayerControllerTests {
         Long teamIdProvided = longArgumentCaptor2.getValue();
         assertEquals(idProvided, 1);
         assertEquals(teamIdProvided, 100);
+
+        Mockito.when(playerService.readById(1L)).thenReturn(Optional.empty());
+        mockMvc.perform(put("/players/1/teams/add").param("teamId", "100"))
+                .andExpect(status().isNotFound());
+        Mockito.verify(playerService, Mockito.times(2))
+                .addToTeam(longArgumentCaptor1.capture(), longArgumentCaptor2.capture());
     }
 
     @Test
     public void testRemoveFromTeam() throws Exception {
-        Player player = new Player(1L, "Marko", "Hujo", "hujomark@fit.cvut.cz",
-                LocalDate.of(2001, Month.AUGUST, 20), new HashSet<>());
-
+        Player player = new Player(1L, null, null, null, null, new HashSet<>());
         Mockito.when(playerService.readById(1L)).thenReturn(Optional.of(player));
 
         mockMvc.perform(put("/players/1/teams/remove").param("teamId", "100"))
@@ -223,5 +227,4 @@ public class PlayerControllerTests {
                 .andExpect(status().isNoContent());
         Mockito.verify(playerService, Mockito.times(1)).deletePlayerById(1L);
     }
-
 }
