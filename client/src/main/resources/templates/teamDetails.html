@@ -100,6 +100,41 @@
             </div>
         </form>
 
+        <!-- Remove player from team-->
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" id="btn2">
+            Remove From Team
+        </button>
+
+        <!-- Modal -->
+        <form th:action="@{'/teams/removePlayer'}" th:object="${team}" method="post">
+            <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Remove Player From <span
+                                    th:text="${team.name}"></span></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="team_remove_id">Team ID</label>
+                            <select th:field="*{tmpId}" class="form-select" aria-label="Default select example"
+                                    id="team_remove_id">
+                                <option th:each="player: ${teamPlayers}" th:value="${player.id}"
+                                        th:text="${player.name} + ' ' + ${player.surname}"></option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="remove_btn">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
     </div>
 </div>
 

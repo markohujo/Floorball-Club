@@ -44,6 +44,7 @@ public class TeamWebController {
         teamClient.setCurrentId(id);
         model.addAttribute("team", teamClient.readOne(id));
         model.addAttribute("allPlayers", playerClient.readAll());
+        model.addAttribute("teamPlayers", teamClient.players(id));
         return "teamDetails";
     }
 
@@ -64,6 +65,12 @@ public class TeamWebController {
     @PostMapping("/addPlayer")
     public String addPlayer (@ModelAttribute TeamDto team, Model model) {
         teamClient.addPlayer(team.tmpId);
+        return "redirect:/teams";
+    }
+
+    @PostMapping("/removePlayer")
+    public String removePlayer (@ModelAttribute TeamDto team, Model model) {
+        teamClient.removePLayer(team.tmpId);
         return "redirect:/teams";
     }
 

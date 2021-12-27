@@ -88,4 +88,16 @@ public class TeamClient {
                 .retrieve()
                 .toBodilessEntity().subscribe();
     }
+
+    public void removePLayer(Long playerId) {
+        webClient.put()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/{id}/players/remove")
+                        .queryParam("player", "{player}")
+                        .build(currentId, playerId))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .toBodilessEntity().subscribe();
+    }
 }
