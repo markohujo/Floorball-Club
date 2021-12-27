@@ -88,8 +88,7 @@ public class PlayerControllerTests {
     @Test
     public void testGetOne() throws Exception {
         Mockito.when(playerService.readById(1L)).thenReturn(Optional.empty());
-        mockMvc.perform(get("/players/1"))
-                .andExpect(status().isNotFound());
+        mockMvc.perform(get("/players/1")).andExpect(status().isNotFound());
 
         Player player = new Player(1L, "Marko", "Hujo", null, null, Collections.emptySet());
         Mockito.when(playerService.readById(1L)).thenReturn(Optional.of(player));
@@ -105,9 +104,10 @@ public class PlayerControllerTests {
 
     @Test
     public void testGetTeams() throws Exception {
-        Player player = new Player(1L, "Marko", "Hujo", null, null,
-                new HashSet<>());
+        Mockito.when(playerService.readById(1L)).thenReturn(Optional.empty());
+        mockMvc.perform(get("/players/1/teams")).andExpect(status().isNotFound());
 
+        Player player = new Player(1L, "Marko", "Hujo", null, null, new HashSet<>());
         Team team1 = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
         Team team2 = new Team(101L, "Team B", new HashSet<>(), new HashSet<>());
         Team team3 = new Team(102L, "Team C", new HashSet<>(), new HashSet<>());

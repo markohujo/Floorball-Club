@@ -51,7 +51,7 @@ public class TeamController {
     }
 
     @GetMapping("/teams/{id}/players")
-    public Collection<PlayerDto> teams(@PathVariable Long id) {
+    public Collection<PlayerDto> players(@PathVariable Long id) {
         Team team = teamService.readById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Team Not Found"));
         return PlayerConverter.fromModelMany(team.getPlayers());

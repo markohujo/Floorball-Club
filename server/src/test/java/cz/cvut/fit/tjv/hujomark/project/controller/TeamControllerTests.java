@@ -2,6 +2,7 @@ package cz.cvut.fit.tjv.hujomark.project.controller;
 
 import cz.cvut.fit.tjv.hujomark.project.api.controller.TeamController;
 import cz.cvut.fit.tjv.hujomark.project.business.TeamService;
+import cz.cvut.fit.tjv.hujomark.project.domain.Match;
 import cz.cvut.fit.tjv.hujomark.project.domain.Player;
 import cz.cvut.fit.tjv.hujomark.project.domain.Team;
 import org.hamcrest.Matchers;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,8 +74,7 @@ public class TeamControllerTests {
     @Test
     public void testGetOne() throws Exception {
         Mockito.when(teamService.readById(1L)).thenReturn(Optional.empty());
-        mockMvc.perform(get("/teams/1"))
-                .andExpect(status().isNotFound());
+        mockMvc.perform(get("/teams/1")).andExpect(status().isNotFound());
 
         Team team = new Team(1L, "Team A", Collections.emptySet(), Collections.emptySet());
         Mockito.when(teamService.readById(1L)).thenReturn(Optional.of(team));
@@ -86,5 +87,47 @@ public class TeamControllerTests {
                 .andExpect(jsonPath("$.players", Matchers.is(Matchers.empty())))
                 .andExpect(jsonPath("$.matches", Matchers.hasSize(0)))
                 .andExpect(jsonPath("$.matches", Matchers.is(Matchers.empty())));
+    }
+
+    @Test
+    public void testGetPlayers() throws Exception {
+        Mockito.when(teamService.readById(1L)).thenReturn(Optional.empty());
+        mockMvc.perform(get("/teams/1/players")).andExpect(status().isNotFound());
+
+        Team team = new Team(1L, "Team A", new HashSet<>(), new HashSet<>());
+        Player player1 = new Player(100L, null, null, null, null, new HashSet<>());
+        Player player2 = new Player(101L, null, null, null, null, new HashSet<>());
+        List<Player> players = List.of(player1, player2);
+        players.forEach(team::addPlayer);
+
+        Mockito.when(teamService.readById(1L)).thenReturn(Optional.of(team));
+
+        mockMvc.perform(get("/teams/1/players"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.hasSize(2)))
+                .andExpect(jsonPath("$[0].id", Matchers.is(100)))
+                .andExpect(jsonPath("$[1].id", Matchers.is(101)));
+    }
+
+    @Test
+    public void testGetMatches() throws Exception {
+        Mockito.when(teamService.readById(1L)).thenReturn(Optional.empty());
+        mockMvc.perform(get("/teams/1/matches")).andExpect(status().isNotFound());
+
+        Team team = new Team(1L, "Team A", new HashSet<>(), new HashSet<>());
+        Match match1 = new Match(100L, null, team);
+        Match match2 = new Match(101L, null, team);
+        List<Match> matches = List.of(match1, match2);
+        matches.forEach(team::addMatch);
+
+        Mockito.when(teamService.readById(1L)).thenReturn(Optional.of(team));
+
+        mockMvc.perform(get("/teams/1/matches"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.hasSize(2)))
+                .andExpect(jsonPath("$[0].id", Matchers.is(100)))
+                .andExpect(jsonPath("$[0].teamId", Matchers.is(1)))
+                .andExpect(jsonPath("$[1].id", Matchers.is(101)))
+                .andExpect(jsonPath("$[1].teamId", Matchers.is(1)));
     }
 }
