@@ -105,8 +105,8 @@ public class PlayerControllerTests {
 
     @Test
     public void testGetTeams() throws Exception {
-        Player player = new Player(1L, "Marko", "Hujo", "hujomark@fit.cvut.cz",
-                LocalDate.of(2001, Month.AUGUST, 20), new HashSet<>());
+        Player player = new Player(1L, "Marko", "Hujo", null, null,
+                new HashSet<>());
 
         Team team1 = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
         Team team2 = new Team(101L, "Team B", new HashSet<>(), new HashSet<>());
@@ -123,37 +123,33 @@ public class PlayerControllerTests {
                 .andExpect(jsonPath("$[0].id", Matchers.is(100)))
                 .andExpect(jsonPath("$[0].name", Matchers.is("Team A")))
                 .andExpect(jsonPath("$[1].id", Matchers.is(101)))
-                .andExpect(jsonPath("$[2].id", Matchers.is(102)));
+                .andExpect(jsonPath("$[1].name", Matchers.is("Team B")))
+                .andExpect(jsonPath("$[2].id", Matchers.is(102)))
+                .andExpect(jsonPath("$[2].name", Matchers.is("Team C")));
     }
 
     @Test
     public void testGetMatches() throws Exception {
         Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
+        Player player = new Player(1L, "Marko", "Hujo", null, null, Set.of(team));
 
-        Player player = new Player(1L, "Marko", "Hujo", "hujomark@fit.cvut.cz",
-                LocalDate.of(2001, Month.AUGUST, 20), Set.of(team));
-
-        Match match1 = new Match(100L, LocalDateTime.of(
-                LocalDate.of(2022, Month.JANUARY, 15),
-                LocalTime.of(19, 30)), team);
-        Match match2 = new Match(101L, LocalDateTime.of(
-                LocalDate.of(2022, Month.JANUARY, 20),
-                LocalTime.of(17, 0)), team);
-        Set<Match> matches = Set.of(match1, match2);
+        Match match1 = new Match(1000L, null, team);
+        Match match2 = new Match(1001L, null, team);
+        Match match3 = new Match(1002L, null, team);
+        List<Match> matches = List.of(match1, match2, match3);
 
         Mockito.when(playerService.findMatches(1L)).thenReturn(matches);
         Mockito.when(playerService.readById(1L)).thenReturn(Optional.of(player));
 
         mockMvc.perform(get("/players/1/matches"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", Matchers.hasSize(2)))
-                .andExpect(jsonPath("$[0].id", Matchers.anyOf(
-                        Matchers.is(100),
-                        Matchers.is(101))))
-                .andExpect(jsonPath("$[1].id", Matchers.anyOf(
-                        Matchers.is(100),
-                        Matchers.is(101))));
+                .andExpect(jsonPath("$", Matchers.hasSize(3)))
+                .andExpect(jsonPath("$[0].id", Matchers.is(1000)))
+                .andExpect(jsonPath("$[1].id", Matchers.is(1001)))
+                .andExpect(jsonPath("$[2].id", Matchers.is(1002)));
     }
+
+    // OK
 
     @Test
     public void testUpdateEmail() throws Exception {
