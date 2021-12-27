@@ -100,4 +100,31 @@ public class TeamClient {
                 .retrieve()
                 .toBodilessEntity().subscribe();
     }
+
+    public void addMatch(Long matchId) {
+        System.out.println("here here");
+        System.out.println(currentId);
+        System.out.println(matchId);
+        webClient.put()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/{id}/matches/add")
+                        .queryParam("match", "{match}")
+                        .build(currentId, matchId))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .toBodilessEntity().subscribe();
+    }
+
+    public void removeMatch(Long matchId) {
+        webClient.put()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/{id}/matches/remove")
+                        .queryParam("match", "{match}")
+                        .build(currentId, matchId))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .toBodilessEntity().subscribe();
+    }
 }

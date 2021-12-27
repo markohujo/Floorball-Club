@@ -1,5 +1,6 @@
 package cz.cvut.fit.tjv.hujomark.project.client.ui;
 
+import cz.cvut.fit.tjv.hujomark.project.client.data.MatchClient;
 import cz.cvut.fit.tjv.hujomark.project.client.data.PlayerClient;
 import cz.cvut.fit.tjv.hujomark.project.client.data.TeamClient;
 import cz.cvut.fit.tjv.hujomark.project.client.model.PlayerDto;
@@ -16,9 +17,12 @@ public class TeamWebController {
 
     private final PlayerClient playerClient;
 
-    public TeamWebController(TeamClient teamClient, PlayerClient playerClient) {
+    private final MatchClient matchClient;
+
+    public TeamWebController(TeamClient teamClient, PlayerClient playerClient, MatchClient matchClient) {
         this.teamClient = teamClient;
         this.playerClient = playerClient;
+        this.matchClient = matchClient;
     }
 
     @GetMapping
@@ -44,7 +48,9 @@ public class TeamWebController {
         teamClient.setCurrentId(id);
         model.addAttribute("team", teamClient.readOne(id));
         model.addAttribute("allPlayers", playerClient.readAll());
+        model.addAttribute("allMatches", matchClient.readAll());
         model.addAttribute("teamPlayers", teamClient.players(id));
+        model.addAttribute("teamMatches", teamClient.matches(id));
         return "teamDetails";
     }
 
@@ -71,6 +77,21 @@ public class TeamWebController {
     @PostMapping("/removePlayer")
     public String removePlayer (@ModelAttribute TeamDto team, Model model) {
         teamClient.removePLayer(team.tmpId);
+        return "redirect:/teams";
+    }
+
+    @PostMapping("/addMatch")
+    public String addMatch (@ModelAttribute TeamDto team, Model model) {
+        System.out.println("here");
+        System.out.println(teamClient.getCurrentId());
+        System.out.println(team.tmpId);
+        teamClient.addMatch(team.tmpId);
+        return "redirect:/teams";
+    }
+
+    @PostMapping("/removeMatch")
+    public String removeMatch (@ModelAttribute TeamDto team, Model model) {
+        teamClient.removeMatch(team.tmpId);
         return "redirect:/teams";
     }
 
