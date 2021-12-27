@@ -41,8 +41,9 @@ public class TeamService extends AbstractCrudService<Team, Long, TeamJpaReposito
      */
     public void addMatch(Long id, Long matchId) {
         Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
-        team.addMatch(matchService.readById(matchId)
-                .orElseThrow(() -> new NoSuchElementException("Match Not Found")));
+        Match match = matchService.readById(matchId).orElseThrow(() -> new NoSuchElementException("Match Not Found"));
+        team.addMatch(match);
+        match.setTeam(team);
         update(team);
     }
 
