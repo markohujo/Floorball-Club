@@ -17,12 +17,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -145,5 +146,44 @@ public class MatchControllerTests {
                 .andExpect(jsonPath("$[1].teamId", Matchers.is(11)))
                 .andExpect(jsonPath("$[2].id", Matchers.is(5)))
                 .andExpect(jsonPath("$[2].teamId", Matchers.is(12)));
+    }
+
+    @Test
+    public void testUpdate() throws Exception {
+        Team team = new Team(10L, "Team A", Collections.emptySet(), Collections.emptySet());
+        Match match = new Match(1L, LocalDateTime.of(2022,1, 20, 17, 30), team);
+        Mockito.when(matchService.readById(1L)).thenReturn(Optional.of(match));
+
+        mockMvc.perform(put("/matches/1/update")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"id\":1,\"dateTime\":\"20.1.2022 17:30\",\"teamId\":10}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", Matchers.is(1)))
+                .andExpect(jsonPath("$.dateTime", Matchers.is("20.1.2022 17:30")))
+                .andExpect(jsonPath("$.teamId", Matchers.is(10)));
+
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<Long> longArgumentCaptor2 = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
+
+        Mockito.verify(matchService, Mockito.times(1))
+                .updateTeam(longArgumentCaptor.capture(), longArgumentCaptor2.capture());
+
+        Mockito.verify(matchService, Mockito.times(1))
+                .updateDateTime(longArgumentCaptor.capture(), stringArgumentCaptor.capture());
+
+        Long idProvided = longArgumentCaptor.getValue();
+        Long teamIdProvided = longArgumentCaptor2.getValue();
+        String dateTimeProvided = stringArgumentCaptor.getValue();
+        assertEquals(idProvided, 1);
+        assertEquals(teamIdProvided, 10);
+        assertEquals(dateTimeProvided, "2022-01-20T17:30");
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+        mockMvc.perform(delete("/matches/1"))
+                .andExpect(status().isNoContent());
+        Mockito.verify(matchService, Mockito.times(1)).deleteById(1L);
     }
 }

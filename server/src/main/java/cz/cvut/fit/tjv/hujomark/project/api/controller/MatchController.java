@@ -74,7 +74,6 @@ public class MatchController {
 
     @PutMapping("/matches/{id}/update")
     public MatchDto update(@PathVariable Long id, @RequestBody MatchDto match) {
-        System.out.println("here");
         try {
             matchService.updateDateTime(id, match.dateTime.toString());
             matchService.updateTeam(id, match.teamId);
