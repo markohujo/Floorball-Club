@@ -5,10 +5,7 @@ import cz.cvut.fit.tjv.hujomark.project.client.data.TeamClient;
 import cz.cvut.fit.tjv.hujomark.project.client.model.MatchDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -42,6 +39,12 @@ public class MatchWebController {
     public String addSubmit(@ModelAttribute MatchDto match, Model model) {
         match.setDateTime(LocalDateTime.of(match.date, match.time));
         matchClient.create(match).subscribe();
+        return "redirect:/matches";
+    }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam Long id, Model model) {
+        matchClient.delete(id);
         return "redirect:/matches";
     }
 }
