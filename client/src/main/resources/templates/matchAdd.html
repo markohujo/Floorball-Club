@@ -57,8 +57,8 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td><label><input type="date" th:field="*{date}"></label></td>
-                    <td><label><input type="time" min="08:00" max="20:00" value="18:00" th:field="*{time}"></label></td>
+                    <td><label><input required type="date" th:field="*{date}"></label></td>
+                    <td><label><input required type="time" min="08:00" max="20:00" th:field="*{time}"></label></td>
                     <td>
                         <select th:field="*{teamId}" class="form-select"
                                 aria-label="Default select example"

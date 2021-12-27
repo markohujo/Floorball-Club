@@ -55,9 +55,9 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td><label><input id="team_name" type="text" th:field="*{name}"></label></td>
+                    <td><label><input required id="team_name" type="text" th:field="*{name}"></label></td>
                     <td>
-                        <button type="submit" class="btn btn-primary" id="submit_btn" disabled>Add Team</button>
+                        <button type="submit" class="btn btn-primary" id="submit_btn">Add Team</button>
                     </td>
                 </tr>
                 </tbody>
@@ -76,12 +76,4 @@
         margin-top: 5rem;
     }
 </style>
-<script>
-    <!-- this is only optional and may be deleted, API does allow null player info -->
-    const button = document.getElementById("submit_btn");
-    const name = document.getElementById("team_name");
-    player_form.addEventListener("input", function () {
-        button.disabled = name.value === "";
-    })
-</script>
 </html>

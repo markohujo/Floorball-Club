@@ -58,12 +58,12 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td><label><input id="player_name" type="text" th:field="*{name}"></label></td>
-                    <td><label><input id="player_surname" type="text" th:field="*{surname}"></label></td>
-                    <td><label><input id="player_email" type="email" th:field="*{email}"></label></td>
-                    <td><label><input id="player_birth" type="date" th:field="*{dateOfBirth}"></label></td>
+                    <td><label><input required id="player_name" type="text" th:field="*{name}"></label></td>
+                    <td><label><input required id="player_surname" type="text" th:field="*{surname}"></label></td>
+                    <td><label><input required id="player_email" type="email" th:field="*{email}"></label></td>
+                    <td><label><input required id="player_birth" type="date" th:field="*{dateOfBirth}"></label></td>
                     <td>
-                        <button type="submit" class="btn btn-primary" id="submit_btn" disabled>Add Player</button>
+                        <button type="submit" class="btn btn-primary" id="submit_btn">Add Player</button>
                     </td>
                 </tr>
                 </tbody>
@@ -82,16 +82,4 @@
         margin-top: 5rem;
     }
 </style>
-<script>
-    <!-- this is only optional and may be deleted, API does allow null player info -->
-    const button = document.getElementById("submit_btn");
-    const player_form = document.getElementById("player_form");
-    const name = document.getElementById("player_name");
-    const surname = document.getElementById("player_surname");
-    const email = document.getElementById("player_email");
-    const birth = document.getElementById("player_birth");
-    player_form.addEventListener("input", function () {
-        button.disabled = (name.value === "" || surname.value === "" || email.value === "" || birth.value === birth.defaultValue);
-    })
-</script>
 </html>
