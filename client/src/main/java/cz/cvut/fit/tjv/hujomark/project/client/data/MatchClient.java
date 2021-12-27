@@ -15,6 +15,16 @@ public class MatchClient {
 
     private final WebClient webClient;
 
+    private Long currentId;
+
+    public Long getCurrentId() {
+        return currentId;
+    }
+
+    public void setCurrentId(Long currentId) {
+        this.currentId = currentId;
+    }
+
     public MatchClient(@Value("${backend_url}") String backendUrl) {
         this.webClient = WebClient.create(backendUrl + "/matches");;
     }
@@ -41,5 +51,21 @@ public class MatchClient {
                 .retrieve()
                 .toBodilessEntity()
                 .subscribe();
+    }
+
+    public Mono<MatchDto> readOne(Long id) {
+        return webClient.get()
+                .uri("/{id}", id)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(MatchDto.class);
+    }
+
+    public Mono<TeamDto> team(Long id) {
+        return webClient.get()
+                .uri("/{id}/team", id)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(TeamDto.class);
     }
 }

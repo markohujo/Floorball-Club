@@ -42,6 +42,14 @@ public class MatchWebController {
         return "redirect:/matches";
     }
 
+    @GetMapping("/details")
+    public String details(@RequestParam Long id, Model model) {
+        matchClient.setCurrentId(id);
+        model.addAttribute("match", matchClient.readOne(id));
+        model.addAttribute("team", matchClient.team(id));
+        return "matchDetails";
+    }
+
     @GetMapping("/delete")
     public String delete(@RequestParam Long id, Model model) {
         matchClient.delete(id);
