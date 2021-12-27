@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Floorball Club | Matches</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
@@ -44,22 +43,20 @@
     </div>
 
     <div class="container">
-        <table class="table table-striped">
+        <table class="table table-striped" id="table">
             <thead class="thead-dark">
             <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Date and Time</th>
-                <th scope="col">Team ID</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="match: ${matches}">
-                <td th:text="${match.id}"></td>
-                <td th:text="${match.dateTime}"></td>
-                <td th:text="${match.getTeamId()}"></td>
-                <td><a th:href="@{'/matches/edit?id=' + ${match.id}}" class="btn btn-primary">Edit</a></td>
+                <td th:text="${match.dateTime.toLocalDate()}"></td>
+                <td th:text="${match.dateTime.toLocalTime()}"></td>
+                <td><a th:href="@{'/matches/details?id=' + ${match.id}}" class="btn btn-primary">Details</a></td>
                 <td><a th:href="@{'/matches/delete?id=' + ${match.id}}" class="btn btn-danger">Delete</a></td>
             </tr>
             </tbody>
@@ -74,7 +71,7 @@
         text-align: center;
     }
 
-    .card, .table{
+    #table{
         margin-top: 5rem;
     }
 </style>

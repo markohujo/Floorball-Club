@@ -47,7 +47,6 @@
     <table class="table table-striped">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">ID</th>
           <th scope="col">Name</th>
           <th scope="col">Surname</th>
           <th scope="col"></th>
@@ -56,7 +55,6 @@
       </thead>
       <tbody>
         <tr th:each="player: ${players}">
-          <td th:text="${player.id}"></td>
           <td th:text="${player.name}"></td>
           <td th:text="${player.surname}"></td>
           <td><a th:href="@{'/players/details?id=' + ${player.id}}" class="btn btn-primary">Details</a></td>
