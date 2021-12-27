@@ -1,26 +1,28 @@
 package cz.cvut.fit.tjv.hujomark.project.controller;
 
 import cz.cvut.fit.tjv.hujomark.project.api.controller.TeamController;
+import cz.cvut.fit.tjv.hujomark.project.api.converter.TeamConverter;
 import cz.cvut.fit.tjv.hujomark.project.business.TeamService;
 import cz.cvut.fit.tjv.hujomark.project.domain.Match;
 import cz.cvut.fit.tjv.hujomark.project.domain.Player;
 import cz.cvut.fit.tjv.hujomark.project.domain.Team;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -129,5 +131,105 @@ public class TeamControllerTests {
                 .andExpect(jsonPath("$[0].teamId", Matchers.is(1)))
                 .andExpect(jsonPath("$[1].id", Matchers.is(101)))
                 .andExpect(jsonPath("$[1].teamId", Matchers.is(1)));
+    }
+
+    @Test
+    public void testAddPlayer() throws Exception {
+        Player player = new Player(100L, null, null, null, null, new HashSet<>());
+        Team team = new Team(1L, "Team A", Set.of(player), new HashSet<>());
+        Mockito.when(teamService.readById(1L)).thenReturn(Optional.of(team));
+
+        mockMvc.perform(put("/teams/1/players/add").param("player", "100"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", Matchers.is(1)))
+                .andExpect(jsonPath("$.players[0]", Matchers.is(player.getId().intValue())));
+
+        ArgumentCaptor<Long> longArgumentCaptor1 = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<Long> longArgumentCaptor2 = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(teamService, Mockito.times(1))
+                .addPlayer(longArgumentCaptor1.capture(), longArgumentCaptor2.capture());
+        Long idProvided = longArgumentCaptor1.getValue();
+        Long playerIdProvided = longArgumentCaptor2.getValue();
+        assertEquals(idProvided, 1);
+        assertEquals(playerIdProvided, 100);
+
+        Mockito.when(teamService.readById(1L)).thenReturn(Optional.empty());
+        mockMvc.perform(put("/teams/1/players/add").param("player", "100"))
+                .andExpect(status().isNotFound());
+        Mockito.verify(teamService, Mockito.times(2))
+                .addPlayer(longArgumentCaptor1.capture(), longArgumentCaptor2.capture());
+    }
+
+    @Test
+    public void testRemovePlayer() throws Exception {
+        Team team = new Team(1L, "Team A", new HashSet<>(), new HashSet<>());
+        Mockito.when(teamService.readById(1L)).thenReturn(Optional.of(team));
+
+        mockMvc.perform(put("/teams/1/players/remove").param("player", "100"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", Matchers.is(team.getId().intValue())));
+
+        ArgumentCaptor<Long> longArgumentCaptor1 = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<Long> longArgumentCaptor2 = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(teamService, Mockito.times(1))
+                .removePlayer(longArgumentCaptor1.capture(), longArgumentCaptor2.capture());
+        Long idProvided = longArgumentCaptor1.getValue();
+        Long playerIdProvided = longArgumentCaptor2.getValue();
+        assertEquals(idProvided, 1);
+        assertEquals(playerIdProvided, 100);
+    }
+
+    @Test
+    public void testAddMatch() throws Exception {
+        Team team = new Team(1L, "Team A", new HashSet<>(), new HashSet<>());
+        Match match = new Match(100L, null, team);
+        team.addMatch(match);
+        Mockito.when(teamService.readById(1L)).thenReturn(Optional.of(team));
+
+        mockMvc.perform(put("/teams/1/matches/add").param("match", "100"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", Matchers.is(1)))
+                .andExpect(jsonPath("$.matches[0]", Matchers.is(match.getId().intValue())));
+
+        ArgumentCaptor<Long> longArgumentCaptor1 = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<Long> longArgumentCaptor2 = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(teamService, Mockito.times(1))
+                .addMatch(longArgumentCaptor1.capture(), longArgumentCaptor2.capture());
+        Long idProvided = longArgumentCaptor1.getValue();
+        Long matchIdProvided = longArgumentCaptor2.getValue();
+        assertEquals(idProvided, 1);
+        assertEquals(matchIdProvided, 100);
+
+        Mockito.when(teamService.readById(1L)).thenReturn(Optional.empty());
+        mockMvc.perform(put("/teams/1/matches/add").param("match", "100"))
+                .andExpect(status().isNotFound());
+        Mockito.verify(teamService, Mockito.times(2))
+                .addMatch(longArgumentCaptor1.capture(), longArgumentCaptor2.capture());
+    }
+
+    @Test
+    public void testRemoveMatch() throws Exception {
+        Team team = new Team(1L, "Team A", new HashSet<>(), new HashSet<>());
+        Mockito.when(teamService.readById(1L)).thenReturn(Optional.of(team));
+
+        mockMvc.perform(put("/teams/1/matches/remove").param("match", "100"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", Matchers.is(team.getId().intValue())));
+
+        ArgumentCaptor<Long> longArgumentCaptor1 = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<Long> longArgumentCaptor2 = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(teamService, Mockito.times(1))
+                .removeMatch(longArgumentCaptor1.capture(), longArgumentCaptor2.capture());
+        Long idProvided = longArgumentCaptor1.getValue();
+        Long matchIdProvided = longArgumentCaptor2.getValue();
+        assertEquals(idProvided, 1);
+        assertEquals(matchIdProvided, 100);
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+        mockMvc.perform(delete("/teams/1"))
+                .andExpect(status().isNoContent());
+        Mockito.verify(teamService, Mockito.times(1)).deleteTeamById(1L);
     }
 }
