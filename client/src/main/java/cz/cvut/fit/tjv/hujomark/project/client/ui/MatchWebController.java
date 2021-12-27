@@ -31,12 +31,6 @@ public class MatchWebController {
         return "matches";
     }
 
-    @PostMapping("/edit")
-    public String editSubmit(@ModelAttribute PlayerDto player, Model model) {
-        matchClient.update(player);
-        return "redirect:/matches";
-    }
-
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("match", new MatchDto());
@@ -54,10 +48,22 @@ public class MatchWebController {
     @GetMapping("/details")
     public String details(@RequestParam Long id, Model model) {
         matchClient.setCurrentId(id);
-        model.addAttribute("match", matchClient.readOne(id));
+        Mono<MatchDto> matchDtoMono = matchClient.readOne(id);
+        matchDtoMono = matchDtoMono.map(matchDto -> {
+            matchDto.setDate(matchDto.dateTime.toLocalDate());
+            matchDto.setTime(matchDto.dateTime.toLocalTime());
+            return matchDto;
+        });
+        model.addAttribute("match", matchDtoMono);
         model.addAttribute("team", matchClient.team(id));
         model.addAttribute("allTeams", teamClient.readAll());
         return "matchDetails";
+    }
+
+    @PostMapping("/edit")
+    public String edit(@ModelAttribute MatchDto match, Model model) {
+        matchClient.update(match);
+        return "redirect:/matches";
     }
 
     @GetMapping("/delete")

@@ -51,8 +51,6 @@
                     <th scope="col">ID</th>
                     <th scope="col">Date</th>
                     <th scope="col">Time</th>
-                    <th scope="col">Update Date</th>
-                    <th scope="col">Update Time</th>
                     <th scope="col">Team</th>
                     <th scope="col"></th>
                 </tr>
@@ -60,13 +58,11 @@
                 <tbody>
                 <tr>
                     <td th:text="${match.id}"></td>
-                    <td th:text="${match.dateTime.toLocalDate()}"></td>
-                    <td th:text="${match.dateTime.toLocalTime()}"></td>
                     <td>
-                        <label><input type="date" th:field="*{date}"></label>
+                        <label><input type="date" th:field="*{date}" required></label>
                     </td>
                     <td>
-                        <label><input type="time" th:field="*{time}"></label>
+                        <label><input type="time" th:field="*{time}" required></label>
                     </td>
                     <td>
                         <select th:field="*{teamId}" class="form-select" aria-label="Default select example"

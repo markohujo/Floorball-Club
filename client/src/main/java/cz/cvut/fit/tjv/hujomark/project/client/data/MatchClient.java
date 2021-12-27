@@ -10,6 +10,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+
 @Component
 public class MatchClient {
 
@@ -26,7 +28,7 @@ public class MatchClient {
     }
 
     public MatchClient(@Value("${backend_url}") String backendUrl) {
-        this.webClient = WebClient.create(backendUrl + "/matches");;
+        this.webClient = WebClient.create(backendUrl + "/matches");
     }
 
     public Flux<MatchDto> readAll() {
@@ -69,6 +71,19 @@ public class MatchClient {
                 .bodyToMono(TeamDto.class);
     }
 
-    public void update(PlayerDto player) {
+    public void update(MatchDto match) {
+        match.setDateTime(LocalDateTime.of(match.date, match.time));
+        match.setId(currentId);
+        System.out.println(match.id);
+        System.out.println(match.dateTime);
+        System.out.println(match.teamId);
+        webClient.put()
+                .uri("/{id}/update", currentId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .bodyValue(match)
+                .retrieve()
+                .toBodilessEntity()
+                .subscribe();
     }
 }

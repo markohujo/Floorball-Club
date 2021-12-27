@@ -31,8 +31,15 @@ public class MatchService extends AbstractCrudService<Match, Long, MatchJpaRepos
     @Transactional
     public void updateDateTime(Long id, String dateTimeStr) {
         Match match = readById(id).orElseThrow(() -> new NoSuchElementException("Match Not Found"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-        LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, formatter);
+        StringBuilder dateTimeStrNew = new StringBuilder();
+        for (int i = 0; i < dateTimeStr.length(); i++) {
+            if (dateTimeStr.charAt(i) == 'T')
+                dateTimeStrNew.append(' ');
+            else
+                dateTimeStrNew.append(dateTimeStr.charAt(i));
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTime = LocalDateTime.parse(dateTimeStrNew, formatter);
         match.setDateTime(dateTime);
         update(match);
     }
