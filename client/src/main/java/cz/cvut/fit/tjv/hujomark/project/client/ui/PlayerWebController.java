@@ -81,8 +81,6 @@ public class PlayerWebController {
 
     @PostMapping("/createMatch")
     public String createMatchForEachTeam (Model model) {
-        System.out.println("here: create match");
-        System.out.println(playerClient.getCurrentId());
         playerClient.createMatchForEachTeam();
         return "redirect:/players";
     }

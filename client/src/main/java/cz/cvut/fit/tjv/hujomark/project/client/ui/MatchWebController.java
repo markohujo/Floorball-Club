@@ -3,9 +3,12 @@ package cz.cvut.fit.tjv.hujomark.project.client.ui;
 import cz.cvut.fit.tjv.hujomark.project.client.data.MatchClient;
 import cz.cvut.fit.tjv.hujomark.project.client.data.TeamClient;
 import cz.cvut.fit.tjv.hujomark.project.client.model.MatchDto;
+import cz.cvut.fit.tjv.hujomark.project.client.model.PlayerDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.CoreSubscriber;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 
@@ -28,6 +31,12 @@ public class MatchWebController {
         return "matches";
     }
 
+    @PostMapping("/edit")
+    public String editSubmit(@ModelAttribute PlayerDto player, Model model) {
+        matchClient.update(player);
+        return "redirect:/matches";
+    }
+
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("match", new MatchDto());
@@ -47,6 +56,7 @@ public class MatchWebController {
         matchClient.setCurrentId(id);
         model.addAttribute("match", matchClient.readOne(id));
         model.addAttribute("team", matchClient.team(id));
+        model.addAttribute("allTeams", teamClient.readAll());
         return "matchDetails";
     }
 

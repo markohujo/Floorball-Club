@@ -5,6 +5,7 @@ import cz.cvut.fit.tjv.hujomark.project.domain.Match;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -29,7 +30,7 @@ public class MatchService extends AbstractCrudService<Match, Long, MatchJpaRepos
      */
     @Transactional
     public void updateDateTime(Long id, String dateTimeStr) {
-        Match match = readById(id).orElseThrow();
+        Match match = readById(id).orElseThrow(() -> new NoSuchElementException("Match Not Found"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
         LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, formatter);
         match.setDateTime(dateTime);

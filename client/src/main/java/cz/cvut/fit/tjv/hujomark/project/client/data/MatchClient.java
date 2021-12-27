@@ -68,4 +68,7 @@ public class MatchClient {
                 .retrieve()
                 .bodyToMono(TeamDto.class);
     }
+
+    public void update(PlayerDto player) {
+    }
 }
