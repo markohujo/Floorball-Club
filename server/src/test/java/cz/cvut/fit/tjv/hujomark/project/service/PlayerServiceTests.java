@@ -42,6 +42,9 @@ public class PlayerServiceTests {
     @Mock
     PlayerJpaRepository repository;
 
+    @Mock
+    MatchService matchService;
+
     @Test
     public void testFindTeams() {
         Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
