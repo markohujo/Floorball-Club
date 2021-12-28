@@ -1,8 +1,11 @@
 package cz.cvut.fit.tjv.hujomark.project.service;
 
+import cz.cvut.fit.tjv.hujomark.project.business.AbstractCrudService;
+import cz.cvut.fit.tjv.hujomark.project.business.MatchService;
 import cz.cvut.fit.tjv.hujomark.project.business.PlayerService;
 import cz.cvut.fit.tjv.hujomark.project.business.TeamService;
 import cz.cvut.fit.tjv.hujomark.project.dao.TeamJpaRepository;
+import cz.cvut.fit.tjv.hujomark.project.domain.Match;
 import cz.cvut.fit.tjv.hujomark.project.domain.Player;
 import cz.cvut.fit.tjv.hujomark.project.domain.Team;
 import org.junit.jupiter.api.Assertions;
@@ -28,6 +31,9 @@ public class TeamServiceTests {
 
     @Mock
     TeamJpaRepository repository;
+
+    @Mock
+    private MatchService matchService;
 
     @Test
     public void testAddPlayer() {
@@ -79,4 +85,57 @@ public class TeamServiceTests {
         Mockito.verify(repository, Mockito.never()).save(team);
         Mockito.verify(playerService, Mockito.never()).readById(player.getId());
     }
+
+    @Test
+    public void testAddMatch() {
+        Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
+        Match match = new Match(10L, null, team);
+
+        Mockito.when(service.readById(team.getId())).thenReturn(Optional.of(team));
+        Mockito.when(matchService.readById(match.getId())).thenReturn(Optional.of(match));
+        Mockito.when(repository.existsById(team.getId())).thenReturn(true);
+        Mockito.when(repository.save(team)).thenReturn(team);
+
+        Assertions.assertTrue(team.getMatches().isEmpty());
+        service.addMatch(team.getId(), match.getId());
+        Assertions.assertFalse(team.getMatches().isEmpty());
+        Assertions.assertEquals(1, team.getMatches().size());
+        Assertions.assertTrue(team.getMatches().contains(match));
+
+        Mockito.verify(repository, Mockito.times(1)).save(team);
+        Mockito.verify(matchService, Mockito.times(1)).readById(match.getId());
+    }
+
+    @Test
+    public void testAddMatchMatchDoesNotExist() {
+        Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
+        Match match = new Match(10L, null, team);
+
+        Mockito.when(service.readById(team.getId())).thenReturn(Optional.of(team));
+        Mockito.when(matchService.readById(match.getId())).thenReturn(Optional.empty());
+
+        Assertions.assertTrue(team.getMatches().isEmpty());
+        Assertions.assertThrows(NoSuchElementException.class,() -> service.addMatch(team.getId(), match.getId()));
+        Assertions.assertTrue(team.getMatches().isEmpty());
+
+        Mockito.verify(repository, Mockito.never()).save(team);
+        Mockito.verify(matchService, Mockito.times(1)).readById(match.getId());
+    }
+
+    @Test
+    public void testAddMatchTeamDoesNotExist() {
+        Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
+        Match match = new Match(10L, null, team);
+
+        Mockito.when(service.readById(team.getId())).thenReturn(Optional.empty());
+
+        Assertions.assertTrue(team.getMatches().isEmpty());
+        Assertions.assertThrows(NoSuchElementException.class,() -> service.addMatch(team.getId(), match.getId()));
+        Assertions.assertTrue(team.getMatches().isEmpty());
+
+        Mockito.verify(repository, Mockito.never()).save(team);
+        Mockito.verify(matchService, Mockito.never()).readById(match.getId());
+    }
+
+
 }
