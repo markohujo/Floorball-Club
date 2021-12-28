@@ -150,8 +150,8 @@ public class TeamControllerTests {
                 .addPlayer(longArgumentCaptor1.capture(), longArgumentCaptor2.capture());
         Long idProvided = longArgumentCaptor1.getValue();
         Long playerIdProvided = longArgumentCaptor2.getValue();
-        assertEquals(idProvided, 1);
-        assertEquals(playerIdProvided, 100);
+        assertEquals(1, idProvided);
+        assertEquals(100, playerIdProvided);
 
         Mockito.when(teamService.readById(1L)).thenReturn(Optional.empty());
         mockMvc.perform(put("/teams/1/players/add").param("player", "100"))
@@ -175,8 +175,8 @@ public class TeamControllerTests {
                 .removePlayer(longArgumentCaptor1.capture(), longArgumentCaptor2.capture());
         Long idProvided = longArgumentCaptor1.getValue();
         Long playerIdProvided = longArgumentCaptor2.getValue();
-        assertEquals(idProvided, 1);
-        assertEquals(playerIdProvided, 100);
+        assertEquals(1, idProvided);
+        assertEquals(100, playerIdProvided);
     }
 
     @Test
@@ -197,8 +197,8 @@ public class TeamControllerTests {
                 .addMatch(longArgumentCaptor1.capture(), longArgumentCaptor2.capture());
         Long idProvided = longArgumentCaptor1.getValue();
         Long matchIdProvided = longArgumentCaptor2.getValue();
-        assertEquals(idProvided, 1);
-        assertEquals(matchIdProvided, 100);
+        assertEquals(1, idProvided);
+        assertEquals(100, matchIdProvided);
 
         Mockito.when(teamService.readById(1L)).thenReturn(Optional.empty());
         mockMvc.perform(put("/teams/1/matches/add").param("match", "100"))
@@ -222,8 +222,8 @@ public class TeamControllerTests {
                 .removeMatch(longArgumentCaptor1.capture(), longArgumentCaptor2.capture());
         Long idProvided = longArgumentCaptor1.getValue();
         Long matchIdProvided = longArgumentCaptor2.getValue();
-        assertEquals(idProvided, 1);
-        assertEquals(matchIdProvided, 100);
+        assertEquals(1, idProvided);
+        assertEquals(100, matchIdProvided);
     }
 
     @Test

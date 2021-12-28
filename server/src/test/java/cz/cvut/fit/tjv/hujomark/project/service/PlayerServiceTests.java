@@ -24,8 +24,7 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.AdditionalMatchers.not;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -55,7 +54,7 @@ public class PlayerServiceTests {
         Collection<Team> teamsResult = service.findTeams(player.getId());
 
         assertEquals(1, teamsResult.size());
-        assertEquals(team, teamsResult.toArray()[0]);
+        assertTrue(teamsResult.contains(team));
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
         Mockito.verify(repository, Mockito.times(1)).findTeams(argumentCaptor.capture());
         assertEquals(1, argumentCaptor.getValue());
@@ -69,10 +68,10 @@ public class PlayerServiceTests {
 
         Mockito.when(repository.findMatches(player.getId())).thenReturn(List.of(match));
 
-        Collection<Match> teamsResult = service.findMatches(player.getId());
+        Collection<Match> matchesResult = service.findMatches(player.getId());
 
-        assertEquals(1, teamsResult.size());
-        assertEquals(match, teamsResult.toArray()[0]);
+        assertEquals(1, matchesResult.size());
+        assertTrue(matchesResult.contains(match));
         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
         Mockito.verify(repository, Mockito.times(1)).findMatches(argumentCaptor.capture());
         assertEquals(1, argumentCaptor.getValue());

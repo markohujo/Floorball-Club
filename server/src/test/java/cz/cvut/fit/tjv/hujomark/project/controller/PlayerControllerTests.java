@@ -165,8 +165,8 @@ public class PlayerControllerTests {
                 .updateEmail(longArgumentCaptor.capture(), stringArgumentCaptor.capture());
         Long idProvided = longArgumentCaptor.getValue();
         String emailProvided = stringArgumentCaptor.getValue();
-        assertEquals(idProvided, 1);
-        assertEquals(emailProvided, "hujomark@fit.cvut.cz");
+        assertEquals(1, idProvided);
+        assertEquals("hujomark@fit.cvut.cz", emailProvided);
 
         Mockito.when(playerService.readById(1L)).thenReturn(Optional.empty());
         mockMvc.perform(put("/players/1").param("email", "email@email.com"))
@@ -192,8 +192,8 @@ public class PlayerControllerTests {
                 .addToTeam(longArgumentCaptor1.capture(), longArgumentCaptor2.capture());
         Long idProvided = longArgumentCaptor1.getValue();
         Long teamIdProvided = longArgumentCaptor2.getValue();
-        assertEquals(idProvided, 1);
-        assertEquals(teamIdProvided, 100);
+        assertEquals(1, idProvided);
+        assertEquals(100, teamIdProvided);
 
         Mockito.when(playerService.readById(1L)).thenReturn(Optional.empty());
         mockMvc.perform(put("/players/1/teams/add").param("teamId", "100"))
@@ -217,8 +217,8 @@ public class PlayerControllerTests {
                 .removeFromTeam(longArgumentCaptor1.capture(), longArgumentCaptor2.capture());
         Long idProvided = longArgumentCaptor1.getValue();
         Long teamIdProvided = longArgumentCaptor2.getValue();
-        assertEquals(idProvided, 1);
-        assertEquals(teamIdProvided, 100);
+        assertEquals(1, idProvided);
+        assertEquals(100, teamIdProvided);
     }
 
     @Test

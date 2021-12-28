@@ -151,9 +151,9 @@ public class MatchControllerTests {
         Long idProvided = longArgumentCaptor.getValue();
         Long teamIdProvided = longArgumentCaptor2.getValue();
         String dateTimeProvided = stringArgumentCaptor.getValue();
-        assertEquals(idProvided, 1);
-        assertEquals(teamIdProvided, 10);
-        assertEquals(dateTimeProvided, "2022-01-20T17:30");
+        assertEquals(1, idProvided);
+        assertEquals(10, teamIdProvided);
+        assertEquals("2022-01-20T17:30", dateTimeProvided);
     }
 
     @Test
