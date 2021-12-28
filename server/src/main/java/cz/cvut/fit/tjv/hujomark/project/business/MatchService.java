@@ -31,17 +31,9 @@ public class MatchService extends AbstractCrudService<Match, Long, MatchJpaRepos
     @Transactional
     public void updateDateTime(Long id, String dateTimeStr) {
         Match match = readById(id).orElseThrow(() -> new NoSuchElementException("Match Not Found"));
-        StringBuilder dateTimeStrNew = new StringBuilder();
-        for (int i = 0; i < dateTimeStr.length(); i++) {
-            if (dateTimeStr.charAt(i) == 'T')
-                dateTimeStrNew.append(' ');
-            else
-                dateTimeStrNew.append(dateTimeStr.charAt(i));
-        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime dateTime = LocalDateTime.parse(dateTimeStrNew, formatter);
+        LocalDateTime dateTime = LocalDateTime.parse(strParse(dateTimeStr), formatter);
         match.setDateTime(dateTime);
-        update(match);
     }
 
     /**
@@ -55,7 +47,17 @@ public class MatchService extends AbstractCrudService<Match, Long, MatchJpaRepos
             match.getTeam().removeMatch(match);
             match.setTeam(teamService.readById(teamId).orElseThrow(() -> new NoSuchElementException("Team Not Found")));
             teamService.readById(teamId).orElseThrow().addMatch(match);
-            update(match);
         }
+    }
+
+    private StringBuilder strParse(String str) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == 'T')
+                result.append(' ');
+            else
+                result.append(str.charAt(i));
+        }
+        return result;
     }
 }

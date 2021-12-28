@@ -33,7 +33,7 @@ public class TeamServiceTests {
     TeamJpaRepository repository;
 
     @Mock
-    private MatchService matchService;
+    MatchService matchService;
 
     @Test
     public void testAddPlayer() {
