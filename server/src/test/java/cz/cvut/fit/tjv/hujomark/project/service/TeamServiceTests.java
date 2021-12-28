@@ -42,8 +42,6 @@ public class TeamServiceTests {
 
         Mockito.when(service.readById(team.getId())).thenReturn(Optional.of(team));
         Mockito.when(playerService.readById(player.getId())).thenReturn(Optional.of(player));
-        Mockito.when(repository.existsById(team.getId())).thenReturn(true);
-        Mockito.when(repository.save(team)).thenReturn(team);
 
         Assertions.assertTrue(team.getPlayers().isEmpty());
         service.addPlayer(team.getId(), player.getId());
@@ -51,7 +49,6 @@ public class TeamServiceTests {
         Assertions.assertEquals(1, team.getPlayers().size());
         Assertions.assertTrue(team.getPlayers().contains(player));
 
-        Mockito.verify(repository, Mockito.times(1)).save(team);
         Mockito.verify(playerService, Mockito.times(1)).readById(player.getId());
     }
 
@@ -67,7 +64,6 @@ public class TeamServiceTests {
         Assertions.assertThrows(NoSuchElementException.class, () -> service.addPlayer(team.getId(), player.getId()));
         Assertions.assertTrue(team.getPlayers().isEmpty());
 
-        Mockito.verify(repository, Mockito.never()).save(team);
         Mockito.verify(playerService, Mockito.times(1)).readById(player.getId());
     }
 
@@ -82,27 +78,22 @@ public class TeamServiceTests {
         Assertions.assertThrows(NoSuchElementException.class, () -> service.addPlayer(team.getId(), player.getId()));
         Assertions.assertTrue(team.getPlayers().isEmpty());
 
-        Mockito.verify(repository, Mockito.never()).save(team);
         Mockito.verify(playerService, Mockito.never()).readById(player.getId());
     }
 
     @Test
     public void testAddMatch() {
         Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
-        Match match = new Match(10L, null, team);
+        Match match = new Match(10L, null, null);
 
         Mockito.when(service.readById(team.getId())).thenReturn(Optional.of(team));
         Mockito.when(matchService.readById(match.getId())).thenReturn(Optional.of(match));
-        Mockito.when(repository.existsById(team.getId())).thenReturn(true);
-        Mockito.when(repository.save(team)).thenReturn(team);
 
         Assertions.assertTrue(team.getMatches().isEmpty());
         service.addMatch(team.getId(), match.getId());
         Assertions.assertFalse(team.getMatches().isEmpty());
         Assertions.assertEquals(1, team.getMatches().size());
         Assertions.assertTrue(team.getMatches().contains(match));
-
-        Mockito.verify(repository, Mockito.times(1)).save(team);
         Mockito.verify(matchService, Mockito.times(1)).readById(match.getId());
     }
 
@@ -118,7 +109,6 @@ public class TeamServiceTests {
         Assertions.assertThrows(NoSuchElementException.class,() -> service.addMatch(team.getId(), match.getId()));
         Assertions.assertTrue(team.getMatches().isEmpty());
 
-        Mockito.verify(repository, Mockito.never()).save(team);
         Mockito.verify(matchService, Mockito.times(1)).readById(match.getId());
     }
 
@@ -133,7 +123,6 @@ public class TeamServiceTests {
         Assertions.assertThrows(NoSuchElementException.class,() -> service.addMatch(team.getId(), match.getId()));
         Assertions.assertTrue(team.getMatches().isEmpty());
 
-        Mockito.verify(repository, Mockito.never()).save(team);
         Mockito.verify(matchService, Mockito.never()).readById(match.getId());
     }
     
@@ -143,7 +132,13 @@ public class TeamServiceTests {
 //        team.removePlayer(playerService.readById(playerId)
 //                .orElseThrow(() -> new NoSuchElementException("Player Not Found")));
 //        update(team);
-        // TODO
+
+//        Player player = new Player(1L, "Marko", "Hujo", null, null, new HashSet<>());
+//        Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
+//        team.addPlayer(player);
+//
+//        Mockito.when(service.readById(team.getId())).thenReturn(Optional.of(team));
+//        Mockito.when(playerService.readById(player.getId())).thenReturn(Optional.of(player));
     }
 
     @Test

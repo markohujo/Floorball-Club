@@ -7,6 +7,7 @@ import cz.cvut.fit.tjv.hujomark.project.domain.Team;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
@@ -33,34 +34,33 @@ public class TeamService extends AbstractCrudService<Team, Long, TeamJpaReposito
      * @throws NoSuchElementException if no team with the given id is found
      * @throws NoSuchElementException if no player with the given playerId is found
      */
+    @Transactional
     public void addPlayer(Long id, Long playerId) {
         Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
         team.addPlayer(playerService.readById(playerId)
                 .orElseThrow(() -> new NoSuchElementException("Player Not Found")));
-        update(team);
     }
 
     /**
      * @throws NoSuchElementException if no team with the given id is found
      * @throws NoSuchElementException if no match with the given matchId is found
      */
+    @Transactional
     public void addMatch(Long id, Long matchId) {
         Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
         Match match = matchService.readById(matchId).orElseThrow(() -> new NoSuchElementException("Match Not Found"));
         team.addMatch(match);
-        match.setTeam(team);
-        update(team);
     }
 
     /**
      * @throws NoSuchElementException if no team with the given id is found
      * @throws NoSuchElementException if no player with the given playerId is found
      */
+    @Transactional
     public void removePlayer(Long id, Long playerId) {
         Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
         team.removePlayer(playerService.readById(playerId)
                 .orElseThrow(() -> new NoSuchElementException("Player Not Found")));
-        update(team);
     }
 
     /**
@@ -68,13 +68,13 @@ public class TeamService extends AbstractCrudService<Team, Long, TeamJpaReposito
      * @throws NoSuchElementException if no team with the given id is found
      * @throws NoSuchElementException if no match with the given matchId is found
      */
+    @Transactional
     public void removeMatch(Long id, Long matchId) {
         Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
         team.removeMatch(matchService.readById(matchId)
                 .orElseThrow(() -> new NoSuchElementException("Match Not Found")));
         // match gets deleted as there is always only one team in relationship with this match
         matchService.deleteById(matchId);
-        update(team);
     }
 
     /**
