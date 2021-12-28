@@ -232,4 +232,28 @@ public class TeamControllerTests {
                 .andExpect(status().isNoContent());
         Mockito.verify(teamService, Mockito.times(1)).deleteTeamById(1L);
     }
+
+    @Test
+    public void testGetMatchesExceptTeam() throws Exception {
+        Team team1 = new Team(10L, "Team A", Collections.emptySet(), Collections.emptySet());
+        Team team2 = new Team(11L, "Team B", Collections.emptySet(), Collections.emptySet());
+        Team team3 = new Team(12L, "Team C", Collections.emptySet(), Collections.emptySet());
+        Match match1 = new Match(1L, null, team1);
+        Match match2 = new Match(2L, null, team1);
+        Match match3 = new Match(3L, null, team2);
+        Match match4 = new Match(4L, null, team2);
+        Match match5 = new Match(5L, null, team3);
+        List<Match> matchesExceptTeam1 = List.of(match3, match4, match5);
+        Mockito.when(teamService.availableMatches(10L)).thenReturn(matchesExceptTeam1);
+
+        mockMvc.perform(get("/teams/10/matches/available").param("teamId", team1.getId().toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", Matchers.hasSize(3)))
+                .andExpect(jsonPath("$[0].id", Matchers.is(3)))
+                .andExpect(jsonPath("$[0].teamId", Matchers.is(11)))
+                .andExpect(jsonPath("$[1].id", Matchers.is(4)))
+                .andExpect(jsonPath("$[1].teamId", Matchers.is(11)))
+                .andExpect(jsonPath("$[2].id", Matchers.is(5)))
+                .andExpect(jsonPath("$[2].teamId", Matchers.is(12)));
+    }
 }
