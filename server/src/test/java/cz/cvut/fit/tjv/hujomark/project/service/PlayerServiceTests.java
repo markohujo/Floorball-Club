@@ -1,5 +1,6 @@
 package cz.cvut.fit.tjv.hujomark.project.service;
 
+import cz.cvut.fit.tjv.hujomark.project.business.MatchService;
 import cz.cvut.fit.tjv.hujomark.project.business.PlayerService;
 import cz.cvut.fit.tjv.hujomark.project.business.TeamService;
 import cz.cvut.fit.tjv.hujomark.project.dao.PlayerJpaRepository;
@@ -42,7 +43,7 @@ public class PlayerServiceTests {
     PlayerJpaRepository repository;
 
     @Mock
-    Team team;
+    MatchService matchService;
 
     @Test
     public void testFindTeams() {
@@ -164,5 +165,41 @@ public class PlayerServiceTests {
         Mockito.when(teamService.readById(team.getId())).thenReturn(Optional.of(team));
         Mockito.when(service.readById(player.getId())).thenReturn(Optional.empty());
         Assertions.assertThrows(NoSuchElementException.class, () -> service.removeFromTeam(player.getId(), team.getId()));
+    }
+
+    @Test
+    public void testDelete() {
+        Player player = new Player(1L, "Marko", "Hujo", null, null, new HashSet<>());
+        Mockito.when(service.readById(player.getId())).thenReturn(Optional.of(player));
+        service.deletePlayerById(player.getId());
+        Mockito.verify(repository, Mockito.times(1)).deleteById(player.getId());
+    }
+
+    @Test
+    public void testDeletePlayerDoesNotExist() {
+        Mockito.when(service.readById(1L)).thenReturn(Optional.empty());
+        Assertions.assertThrows(NoSuchElementException.class, () -> service.deletePlayerById(1L));
+    }
+
+    @Test
+    public void testCreateMatchForEachTeam() {
+        Player player = new Player(1L, "Marko", "Hujo", null, null, new HashSet<>());
+        Team team1 = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
+        Team team2 = new Team(101L, "Team B", new HashSet<>(), new HashSet<>());
+        player.getTeams().add(team1);
+        player.getTeams().add(team2);
+        Assertions.assertFalse(player.getTeams().isEmpty());
+        Assertions.assertEquals(2, player.getTeams().size());
+
+        Assertions.assertTrue(team1.getMatches().isEmpty());
+        Assertions.assertTrue(team2.getMatches().isEmpty());
+
+        Mockito.when(service.readById(player.getId())).thenReturn(Optional.of(player));
+
+        service.createMatchForEachTeam(player.getId());
+        Assertions.assertFalse(team1.getMatches().isEmpty());
+        Assertions.assertFalse(team2.getMatches().isEmpty());
+        Assertions.assertEquals(1, team1.getMatches().size());
+        Assertions.assertEquals(1, team2.getMatches().size());
     }
 }
