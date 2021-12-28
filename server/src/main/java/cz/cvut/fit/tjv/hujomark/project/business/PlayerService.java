@@ -46,7 +46,6 @@ public class PlayerService extends AbstractCrudService<Player, Long, PlayerJpaRe
     public void updateEmail(Long id, String email) {
         Player player = readById(id).orElseThrow();
         player.setEmail(email);
-        update(player);
     }
 
     /**
@@ -82,6 +81,7 @@ public class PlayerService extends AbstractCrudService<Player, Long, PlayerJpaRe
      * Creates a new match for each team in which the player with the given id plays
      * @throws NoSuchElementException if no player with the given id is found
      */
+    @Transactional
     public void createMatchForEachTeam(Long id) {
         Player player = readById(id).orElseThrow();
         player.getTeams().forEach(team -> {

@@ -131,12 +131,11 @@ public class TeamServiceTests {
 //        Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
 //        team.removePlayer(playerService.readById(playerId)
 //                .orElseThrow(() -> new NoSuchElementException("Player Not Found")));
-//        update(team);
 
-//        Player player = new Player(1L, "Marko", "Hujo", null, null, new HashSet<>());
-//        Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
-//        team.addPlayer(player);
-//
+        Player player = new Player(1L, "Marko", "Hujo", null, null, new HashSet<>());
+        Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
+        team.addPlayer(player);
+
 //        Mockito.when(service.readById(team.getId())).thenReturn(Optional.of(team));
 //        Mockito.when(playerService.readById(player.getId())).thenReturn(Optional.of(player));
     }

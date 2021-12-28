@@ -81,16 +81,10 @@ public class PlayerServiceTests {
     @Test
     public void testUpdateEmail() {
         Player player = new Player(1L, null, null, "hujomark@fit.cvut.cz", null, new HashSet<>());
-
         Mockito.when(service.readById(player.getId())).thenReturn(Optional.of(player));
-        Mockito.when(repository.existsById(player.getId())).thenReturn(true);
-
+        assertEquals("hujomark@fit.cvut.cz", player.getEmail());
         service.updateEmail(player.getId(), "hujomark@cvut.cz");
-
-        ArgumentCaptor<Player> playerArgumentCaptor = ArgumentCaptor.forClass(Player.class);
-        Mockito.verify(repository, Mockito.times(1)).save(playerArgumentCaptor.capture());
-        assertEquals(player, playerArgumentCaptor.getValue());
-        assertEquals("hujomark@cvut.cz", playerArgumentCaptor.getValue().getEmail());
+        assertEquals("hujomark@cvut.cz", player.getEmail());
     }
 
     @Test
