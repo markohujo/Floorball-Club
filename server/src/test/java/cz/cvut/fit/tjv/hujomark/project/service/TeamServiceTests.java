@@ -136,6 +136,59 @@ public class TeamServiceTests {
         Mockito.verify(repository, Mockito.never()).save(team);
         Mockito.verify(matchService, Mockito.never()).readById(match.getId());
     }
+    
+    @Test
+    public void testRemovePlayer() {
+//        Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
+//        team.removePlayer(playerService.readById(playerId)
+//                .orElseThrow(() -> new NoSuchElementException("Player Not Found")));
+//        update(team);
+        // TODO
+    }
 
+    @Test
+    public void testRemovePlayerPlayerDoesNotExist() {
+        // TODO
+    }
 
+    @Test
+    public void testRemovePlayerTeamDoesNotExist() {
+        // TODO
+    }
+
+    @Test
+    public void testRemoveMatch() {
+//        Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
+//        team.removeMatch(matchService.readById(matchId)
+//                .orElseThrow(() -> new NoSuchElementException("Match Not Found")));
+//        matchService.deleteById(matchId);
+//        update(team);
+        // TODO
+    }
+
+    @Test
+    public void testRemoveMatchMatchDoesNotExist() {
+        // TODO
+    }
+
+    @Test
+    public void testRemoveMatchTeamDoesNotExist() {
+        // TODO
+    }
+
+    @Test
+    public void testDelete() {
+        Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
+        Mockito.when(service.readById(team.getId())).thenReturn(Optional.of(team));
+        service.deleteTeamById(team.getId());
+        Mockito.verify(repository, Mockito.times(1)).deleteById(team.getId());
+    }
+
+    @Test
+    public void testDeleteTeamDoesNotExist() {
+        Long id = 1L;
+        Mockito.when(service.readById(id)).thenReturn(Optional.empty());
+        Assertions.assertThrows(NoSuchElementException.class, () -> service.deleteTeamById(id));
+        Mockito.verify(repository, Mockito.never()).deleteById(id);
+    }
 }
