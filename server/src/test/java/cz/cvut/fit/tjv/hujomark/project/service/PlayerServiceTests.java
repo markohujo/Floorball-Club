@@ -43,50 +43,6 @@ public class PlayerServiceTests {
     TeamJpaRepository teamRepository;
 
     @Test
-    public void testCreate() {
-        Player player = new Player(1L, "Marko", "Hujo", "hujomark@fit.cvut.cz",
-                LocalDate.of(2001, Month.AUGUST, 20), new HashSet<>());
-
-        service.create(player);
-
-        Mockito.verify(repository, Mockito.times(1)).save(any());
-        Mockito.verify(repository, Mockito.times(1)).save(any(Player.class));
-        Mockito.verify(repository, Mockito.times(1)).save(player);
-    }
-
-    @Test
-    public void testReadAll() {
-        Player player1 = new Player(1L, "Marko", "Hujo", "hujomark@fit.cvut.cz",
-                LocalDate.of(2001, Month.AUGUST, 20), new HashSet<>());
-        Player player2 = new Player(2L, "Someone", "Else", "hujomark@fit.cvut.cz",
-                LocalDate.of(2001, Month.AUGUST, 20), new HashSet<>());
-        List<Player> players = List.of(player1, player2);
-
-        Mockito.when(repository.findAll()).thenReturn(players);
-
-        List<Player> playersResult = service.readAll();
-        assertEquals(playersResult.size(), 2);
-        assertEquals(playersResult.toArray()[0], player1);
-        assertEquals(playersResult.toArray()[1], player2);
-        Mockito.verify(repository, Mockito.times(1)).findAll();
-    }
-
-    @Test
-    public void testReadOne() {
-        Player player = new Player(100L, "Marko", "Hujo", "hujomark@fit.cvut.cz",
-                LocalDate.of(2001, Month.AUGUST, 20), new HashSet<>());
-
-        Mockito.when(repository.findById(100L)).thenReturn(Optional.of(player));
-
-        Optional<Player> playerResult = service.readById(100L);
-        assertNotNull(playerResult);
-        assertEquals(playerResult.get(), player);
-        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
-        Mockito.verify(repository, Mockito.times(1)).findById(argumentCaptor.capture());
-        assertEquals(argumentCaptor.getValue(), 100);
-    }
-
-    @Test
     public void testFindTeams() {
         Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
         Player player = new Player(1L, "Marko", "Hujo", "hujomark@fit.cvut.cz",
