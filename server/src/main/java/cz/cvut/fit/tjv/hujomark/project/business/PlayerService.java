@@ -5,6 +5,7 @@ import cz.cvut.fit.tjv.hujomark.project.dao.PlayerJpaRepository;
 import cz.cvut.fit.tjv.hujomark.project.domain.Match;
 import cz.cvut.fit.tjv.hujomark.project.domain.Player;
 import cz.cvut.fit.tjv.hujomark.project.domain.Team;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
