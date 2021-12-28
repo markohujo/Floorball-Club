@@ -132,26 +132,41 @@ public class TeamServiceTests {
     
     @Test
     public void testRemovePlayer() {
-//        Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
-//        team.removePlayer(playerService.readById(playerId)
-//                .orElseThrow(() -> new NoSuchElementException("Player Not Found")));
-
         Player player = new Player(1L, "Marko", "Hujo", null, null, new HashSet<>());
         Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
         team.addPlayer(player);
 
-//        Mockito.when(service.readById(team.getId())).thenReturn(Optional.of(team));
-//        Mockito.when(playerService.readById(player.getId())).thenReturn(Optional.of(player));
+        Mockito.when(service.readById(team.getId())).thenReturn(Optional.of(team));
+        Mockito.when(playerService.readById(player.getId())).thenReturn(Optional.of(player));
+
+        Assertions.assertTrue(team.getPlayers().contains(player));
+        service.removePlayer(team.getId(), player.getId());
+        Assertions.assertFalse(team.getPlayers().contains(player));
+        Assertions.assertTrue(team.getPlayers().isEmpty());
     }
 
     @Test
     public void testRemovePlayerPlayerDoesNotExist() {
-        // TODO
+        Player player = new Player(1L, "Marko", "Hujo", null, null, new HashSet<>());
+        Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
+        team.addPlayer(player);
+
+        Mockito.when(service.readById(team.getId())).thenReturn(Optional.of(team));
+        Mockito.when(playerService.readById(player.getId())).thenReturn(Optional.empty());
+        var e = Assertions.assertThrows(NoSuchElementException.class, () -> service.removePlayer(team.getId(), player.getId()));
+        Assertions.assertEquals("Player Not Found", e.getMessage());
+
     }
 
     @Test
     public void testRemovePlayerTeamDoesNotExist() {
-        // TODO
+        Player player = new Player(1L, "Marko", "Hujo", null, null, new HashSet<>());
+        Team team = new Team(100L, "Team A", new HashSet<>(), new HashSet<>());
+        team.addPlayer(player);
+
+        Mockito.when(service.readById(team.getId())).thenReturn(Optional.empty());
+        var e = Assertions.assertThrows(NoSuchElementException.class, () -> service.removePlayer(team.getId(), player.getId()));
+        Assertions.assertEquals("Team Not Found", e.getMessage());
     }
 
     @Test
