@@ -62,6 +62,10 @@
       </tr>
       </tbody>
     </table>
+
+    <a th:href="'/players/details?id=' + ${player.id}" class="btn btn-primary">Back to details of player <span
+            th:text="${player.name}"></span> <span th:text="${player.surname}"></span></a>
+
   </div>
 </div>
 </body>
