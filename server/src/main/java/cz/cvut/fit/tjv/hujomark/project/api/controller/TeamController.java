@@ -64,6 +64,11 @@ public class TeamController {
         return MatchConverter.fromModelMany(team.getMatches());
     }
 
+    @GetMapping("/teams/{id}/matches/available")
+    public Collection<MatchDto> availableMatches(@PathVariable Long id) {
+        return MatchConverter.fromModelMany(teamService.availableMatches(id));
+    }
+
     @PutMapping("/teams/{id}/players/add")
     public TeamDto addPlayer(@PathVariable Long id, @RequestParam Long player) {
         try {

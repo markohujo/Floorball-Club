@@ -1,11 +1,13 @@
 package cz.cvut.fit.tjv.hujomark.project.business;
 
+import cz.cvut.fit.tjv.hujomark.project.dao.MatchJpaRepository;
 import cz.cvut.fit.tjv.hujomark.project.dao.TeamJpaRepository;
 import cz.cvut.fit.tjv.hujomark.project.domain.Match;
 import cz.cvut.fit.tjv.hujomark.project.domain.Team;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.NoSuchElementException;
 
 @Component
@@ -13,10 +15,13 @@ public class TeamService extends AbstractCrudService<Team, Long, TeamJpaReposito
     private final MatchService matchService;
     private final PlayerService playerService;
 
-    protected TeamService(TeamJpaRepository repository, @Lazy MatchService matchService, @Lazy PlayerService playerService) {
+    private final MatchJpaRepository matchJpaRepository;
+
+    protected TeamService(TeamJpaRepository repository, @Lazy MatchService matchService, @Lazy PlayerService playerService, MatchJpaRepository matchJpaRepository) {
         super(repository);
         this.matchService = matchService;
         this.playerService = playerService;
+        this.matchJpaRepository = matchJpaRepository;
     }
 
     @Override
@@ -80,5 +85,13 @@ public class TeamService extends AbstractCrudService<Team, Long, TeamJpaReposito
         Team team = readById(id).orElseThrow(() -> new NoSuchElementException("Team Not Found"));
         team.getMatches().forEach(match -> matchService.deleteById(match.getId()));
         deleteById(id);
+    }
+
+    /**
+     * @return all available matches for the team with the given id,
+     *         in other words matches except those that are played by the team with the given id;
+     */
+    public Collection<Match> availableMatches(Long id) {
+        return matchJpaRepository.findMatchesExcept(id);
     }
 }

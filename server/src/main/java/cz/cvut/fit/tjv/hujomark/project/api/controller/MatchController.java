@@ -67,11 +67,6 @@ public class MatchController {
                 .getTeam());
     }
 
-    @GetMapping("matches/except")
-    public Collection<MatchDto> exceptTeamWithId(@RequestParam Long teamId) {
-        return MatchConverter.fromModelMany(matchService.exceptTeamWithId(teamId));
-    }
-
     @PutMapping("/matches/{id}/update")
     public MatchDto update(@PathVariable Long id, @RequestBody MatchDto match) {
         try {

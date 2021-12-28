@@ -156,7 +156,7 @@
                             <label for="match_add_id">Match ID</label>
                             <select th:field="*{tmpId}" class="form-select" aria-label="Default select example"
                                     id="match_add_id">
-                                <option th:each="match: ${allMatches}" th:value="${match.id}"
+                                <option th:each="match: ${availableMatches}" th:value="${match.id}"
                                         th:text="'Match with ID ' + ${match.id} + ' on ' + ${match.dateTime.toLocalDate()} + ' at ' + ${match.dateTime.toLocalTime()}"></option>
                             </select>
                         </div>
@@ -173,7 +173,7 @@
 
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal4" id="btn4">
-            Remove From Team
+            Remove Match
         </button>
 
         <!-- Modal -->
