@@ -61,7 +61,8 @@ public class TeamServiceTests {
         Mockito.when(playerService.readById(player.getId())).thenReturn(Optional.empty());
 
         Assertions.assertTrue(team.getPlayers().isEmpty());
-        Assertions.assertThrows(NoSuchElementException.class, () -> service.addPlayer(team.getId(), player.getId()));
+        var e = Assertions.assertThrows(NoSuchElementException.class, () -> service.addPlayer(team.getId(), player.getId()));
+        Assertions.assertEquals("Player Not Found", e.getMessage());
         Assertions.assertTrue(team.getPlayers().isEmpty());
 
         Mockito.verify(playerService, Mockito.times(1)).readById(player.getId());
@@ -75,7 +76,8 @@ public class TeamServiceTests {
         Mockito.when(service.readById(team.getId())).thenReturn(Optional.empty());
 
         Assertions.assertTrue(team.getPlayers().isEmpty());
-        Assertions.assertThrows(NoSuchElementException.class, () -> service.addPlayer(team.getId(), player.getId()));
+        var e = Assertions.assertThrows(NoSuchElementException.class, () -> service.addPlayer(team.getId(), player.getId()));
+        Assertions.assertEquals("Team Not Found", e.getMessage());
         Assertions.assertTrue(team.getPlayers().isEmpty());
 
         Mockito.verify(playerService, Mockito.never()).readById(player.getId());
@@ -106,7 +108,8 @@ public class TeamServiceTests {
         Mockito.when(matchService.readById(match.getId())).thenReturn(Optional.empty());
 
         Assertions.assertTrue(team.getMatches().isEmpty());
-        Assertions.assertThrows(NoSuchElementException.class,() -> service.addMatch(team.getId(), match.getId()));
+        var e =Assertions.assertThrows(NoSuchElementException.class,() -> service.addMatch(team.getId(), match.getId()));
+        Assertions.assertEquals("Match Not Found", e.getMessage());
         Assertions.assertTrue(team.getMatches().isEmpty());
 
         Mockito.verify(matchService, Mockito.times(1)).readById(match.getId());
@@ -120,7 +123,8 @@ public class TeamServiceTests {
         Mockito.when(service.readById(team.getId())).thenReturn(Optional.empty());
 
         Assertions.assertTrue(team.getMatches().isEmpty());
-        Assertions.assertThrows(NoSuchElementException.class,() -> service.addMatch(team.getId(), match.getId()));
+        var e = Assertions.assertThrows(NoSuchElementException.class,() -> service.addMatch(team.getId(), match.getId()));
+        Assertions.assertEquals("Team Not Found", e.getMessage());
         Assertions.assertTrue(team.getMatches().isEmpty());
 
         Mockito.verify(matchService, Mockito.never()).readById(match.getId());
