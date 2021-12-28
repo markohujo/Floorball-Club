@@ -64,6 +64,10 @@
             </tr>
             </tbody>
         </table>
+
+        <a th:href="'/teams/details?id=' + ${team.id}" class="btn btn-secondary">Back to details of <span
+                th:text="${team.name}"></span></a>
+
     </div>
 </div>
 </body>
