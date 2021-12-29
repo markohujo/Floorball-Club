@@ -1,8 +1,10 @@
 package cz.cvut.fit.tjv.hujomark.project.business;
 
 import cz.cvut.fit.tjv.hujomark.project.dao.MatchJpaRepository;
+import cz.cvut.fit.tjv.hujomark.project.dao.PlayerJpaRepository;
 import cz.cvut.fit.tjv.hujomark.project.dao.TeamJpaRepository;
 import cz.cvut.fit.tjv.hujomark.project.domain.Match;
+import cz.cvut.fit.tjv.hujomark.project.domain.Player;
 import cz.cvut.fit.tjv.hujomark.project.domain.Team;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -17,12 +19,16 @@ public class TeamService extends AbstractCrudService<Team, Long, TeamJpaReposito
     private final PlayerService playerService;
 
     private final MatchJpaRepository matchJpaRepository;
+    private PlayerJpaRepository playerJpaRepository;
 
-    protected TeamService(TeamJpaRepository repository, @Lazy MatchService matchService, @Lazy PlayerService playerService, MatchJpaRepository matchJpaRepository) {
+    protected TeamService(TeamJpaRepository repository, @Lazy MatchService matchService,
+                          @Lazy PlayerService playerService, MatchJpaRepository matchJpaRepository,
+                          PlayerJpaRepository playerJpaRepository) {
         super(repository);
         this.matchService = matchService;
         this.playerService = playerService;
         this.matchJpaRepository = matchJpaRepository;
+        this.playerJpaRepository = playerJpaRepository;
     }
 
     @Override
@@ -93,5 +99,9 @@ public class TeamService extends AbstractCrudService<Team, Long, TeamJpaReposito
      */
     public Collection<Match> availableMatches(Long id) {
         return matchJpaRepository.findMatchesExcept(id);
+    }
+
+    public Collection<Player> availablePlayers(Long id) {
+        return playerJpaRepository.findPlayersExcept(id);
     }
 }

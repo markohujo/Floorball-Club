@@ -122,4 +122,12 @@ public class PlayerClient {
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve().toBodilessEntity().subscribe();
     }
+
+    public Flux<TeamDto> availableTeams(Long id) {
+        return webClient.get()
+                .uri("/{id}/teams/available", id)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(TeamDto.class);
+    }
 }

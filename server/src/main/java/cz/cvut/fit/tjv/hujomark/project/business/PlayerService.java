@@ -2,6 +2,7 @@ package cz.cvut.fit.tjv.hujomark.project.business;
 
 import cz.cvut.fit.tjv.hujomark.project.api.controller.MatchDto;
 import cz.cvut.fit.tjv.hujomark.project.dao.PlayerJpaRepository;
+import cz.cvut.fit.tjv.hujomark.project.dao.TeamJpaRepository;
 import cz.cvut.fit.tjv.hujomark.project.domain.Match;
 import cz.cvut.fit.tjv.hujomark.project.domain.Player;
 import cz.cvut.fit.tjv.hujomark.project.domain.Team;
@@ -17,11 +18,14 @@ import java.util.NoSuchElementException;
 public class PlayerService extends AbstractCrudService<Player, Long, PlayerJpaRepository> {
     private final TeamService teamService;
     private final MatchService matchService;
+    private TeamJpaRepository teamJpaRepository;
 
-    protected PlayerService(PlayerJpaRepository repository, TeamService teamService, MatchService matchService) {
+    protected PlayerService(PlayerJpaRepository repository, TeamService teamService, MatchService matchService,
+                            TeamJpaRepository teamJpaRepository) {
         super(repository);
         this.teamService = teamService;
         this.matchService = matchService;
+        this.teamJpaRepository = teamJpaRepository;
     }
 
     @Override
@@ -88,5 +92,9 @@ public class PlayerService extends AbstractCrudService<Player, Long, PlayerJpaRe
             Match newMatch = matchService.create(new Match(null, LocalDateTime.now(), team));
             team.addMatch(newMatch);
         });
+    }
+
+    public Collection<Team> availableTeams(Long id) {
+        return teamJpaRepository.findTeamsExcept(id);
     }
 }

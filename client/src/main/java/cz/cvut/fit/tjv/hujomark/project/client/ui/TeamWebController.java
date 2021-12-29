@@ -52,6 +52,7 @@ public class TeamWebController {
         model.addAttribute("teamPlayers", teamClient.players(id));
         model.addAttribute("teamMatches", teamClient.matches(id));
         model.addAttribute("availableMatches", teamClient.availableMatches(id));
+        model.addAttribute("availablePlayers", teamClient.availablePlayers(id));
         return "teamDetails";
     }
 

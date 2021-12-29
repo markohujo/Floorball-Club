@@ -135,4 +135,12 @@ public class TeamClient {
                 .retrieve()
                 .bodyToFlux(MatchDto.class);
     }
+
+    public Flux<PlayerDto> availablePlayers(Long teamId) {
+        return webClient.get()
+                .uri("/{id}/players/available", teamId)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(PlayerDto.class);
+    }
 }

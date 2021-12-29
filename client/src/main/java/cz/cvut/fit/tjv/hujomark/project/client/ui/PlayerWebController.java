@@ -58,6 +58,7 @@ public class PlayerWebController {
         model.addAttribute("player", playerClient.readOne(id));
         model.addAttribute("allTeams", teamClient.readAll());
         model.addAttribute("playerTeams", playerClient.teams(id));
+        model.addAttribute("availableTeams", playerClient.availableTeams(id));
         return "playerDetails";
     }
 

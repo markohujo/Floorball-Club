@@ -87,7 +87,7 @@
                             <label for="team_add_id">Player ID</label>
                             <select th:field="*{tmpId}" class="form-select" aria-label="Default select example"
                                     id="team_add_id">
-                                <option th:each="player: ${allPlayers}" th:value="${player.id}"
+                                <option th:each="player: ${availablePlayers}" th:value="${player.id}"
                                         th:text="${player.name} + ' ' + ${player.surname}"></option>
                             </select>
                         </div>

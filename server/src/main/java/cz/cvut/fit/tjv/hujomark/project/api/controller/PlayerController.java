@@ -117,4 +117,8 @@ public class PlayerController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Player Not Found");
         }
     }
-}
+
+    @GetMapping("players/{id}/teams/available")
+    public Collection<TeamDto> availableTeams(@PathVariable Long id) {
+        return TeamConverter.fromModelMany(playerService.availableTeams(id));
+    }}

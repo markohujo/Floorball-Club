@@ -19,4 +19,9 @@ public interface PlayerJpaRepository extends JpaRepository<Player, Long> {
 
     @Query("select m from Team t join t.matches m join t.players p where p.id = :id")
     Collection<Match> findMatches(@Param("id") Long id);
+
+
+    @Query(value = "select * from player except select p.* from player p join player_team pt on p.id = pt.player_id where pt.team_id = ?1",
+            nativeQuery = true)
+    Collection<Player> findPlayersExcept(Long id);
 }
