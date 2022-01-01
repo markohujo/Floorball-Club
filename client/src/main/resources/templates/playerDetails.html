@@ -92,12 +92,12 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel1">Add Player <span
-                                    th:text="${player.id}"></span> To Team</h5>
+                            <h5 class="modal-title" id="exampleModalLabel1">Add <span
+                                    th:text="${player.name}"></span> <span th:text="${player.surname}"></span> To Team</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label for="team_add_id">Team ID</label>
+                            <label for="team_add_id">Choose team</label>
                             <select th:field="*{tmpTeamId}" class="form-select" aria-label="Default select example"
                                     id="team_add_id">
                                 <option th:each="team: ${availableTeams}" th:value="${team.id}"
@@ -127,12 +127,12 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel2">Remove Player <span
-                                    th:text="${player.id}"></span> From Team</h5>
+                            <h5 class="modal-title" id="exampleModalLabel2">Remove <span
+                                    th:text="${player.name}"></span> <span th:text="${player.surname}"></span> From Team</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label for="team_remove_id">Team ID</label>
+                            <label for="team_remove_id">Choose team</label>
                             <select th:field="*{tmpTeamId}" class="form-select" aria-label="Default select example"
                                     id="team_remove_id">
                                 <option th:each="team: ${playerTeams}" th:value="${team.id}"

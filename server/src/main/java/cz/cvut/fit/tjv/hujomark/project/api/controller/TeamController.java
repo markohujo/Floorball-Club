@@ -64,16 +64,6 @@ public class TeamController {
         return MatchConverter.fromModelMany(team.getMatches());
     }
 
-    @GetMapping("/teams/{id}/matches/available")
-    public Collection<MatchDto> availableMatches(@PathVariable Long id) {
-        return MatchConverter.fromModelMany(teamService.availableMatches(id));
-    }
-
-    @GetMapping("/teams/{id}/players/available")
-    public Collection<PlayerDto> availablePlayers(@PathVariable Long id) {
-        return PlayerConverter.fromModelMany(teamService.availablePlayers(id));
-    }
-
     @PutMapping("/teams/{id}/players/add")
     public TeamDto addPlayer(@PathVariable Long id, @RequestParam Long player) {
         try {
@@ -122,5 +112,15 @@ public class TeamController {
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Team Not Found");
         }
+    }
+
+    @GetMapping("/teams/{id}/matches/available")
+    public Collection<MatchDto> availableMatches(@PathVariable Long id) {
+        return MatchConverter.fromModelMany(teamService.availableMatches(id));
+    }
+
+    @GetMapping("/teams/{id}/players/available")
+    public Collection<PlayerDto> availablePlayers(@PathVariable Long id) {
+        return PlayerConverter.fromModelMany(teamService.availablePlayers(id));
     }
 }

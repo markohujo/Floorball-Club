@@ -69,7 +69,7 @@
 
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1" id="btn1">
-            Add Player To Team
+            Add Player
         </button>
 
         <!-- Modal -->
@@ -84,7 +84,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label for="team_add_id">Player ID</label>
+                            <label for="team_add_id">Choose player</label>
                             <select th:field="*{tmpId}" class="form-select" aria-label="Default select example"
                                     id="team_add_id">
                                 <option th:each="player: ${availablePlayers}" th:value="${player.id}"
@@ -104,7 +104,7 @@
 
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" id="btn2">
-            Remove From Team
+            Remove Player
         </button>
 
         <!-- Modal -->
@@ -119,7 +119,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label for="team_remove_id">Team ID</label>
+                            <label for="team_remove_id">Choose player</label>
                             <select th:field="*{tmpId}" class="form-select" aria-label="Default select example"
                                     id="team_remove_id">
                                 <option th:each="player: ${teamPlayers}" th:value="${player.id}"
@@ -153,7 +153,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label for="match_add_id">Match ID</label>
+                            <label for="match_add_id">Choose match</label>
                             <select th:field="*{tmpId}" class="form-select" aria-label="Default select example"
                                     id="match_add_id">
                                 <option th:each="match: ${availableMatches}" th:value="${match.id}"
@@ -173,7 +173,7 @@
 
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal4" id="btn4">
-            Remove Match
+            Delete Match
         </button>
 
         <!-- Modal -->
@@ -183,12 +183,11 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel4">Remove Player From <span
-                                    th:text="${team.name}"></span></h5>
+                            <h5 class="modal-title" id="exampleModalLabel4">Delete Match</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label for="match_remove_id">Team ID</label>
+                            <label for="match_remove_id">Choose match</label>
                             <select th:field="*{tmpId}" class="form-select" aria-label="Default select example"
                                     id="match_remove_id">
                                 <option th:each="match: ${teamMatches}" th:value="${match.id}"
