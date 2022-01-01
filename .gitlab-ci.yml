@@ -4,3 +4,5 @@ build:
   script:
     - cd server/
     - gradle build
+    - cd ../client
+    - gradle build
